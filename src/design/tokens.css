@@ -1,0 +1,105 @@
+/* ==========================================================================
+   A-Corp Restaurant Intelligence — design tokens
+   Single source of truth for colour, type, space, radius, elevation, motion.
+   Consumed by both the Vite dashboard and the Remotion compositions.
+   ========================================================================== */
+
+:root {
+  /* --- surfaces (graphite / near-black) ---------------------------------- */
+  --void: #08090b;
+  --surface-1: #0e1013;
+  --surface-2: #14171b;
+  --surface-3: #1a1e23;
+  --surface-inset: #0b0d0f;
+  --surface-hover: #1e232a;
+
+  /* --- lines ------------------------------------------------------------- */
+  --line: #22262c;
+  --line-soft: #1a1e23;
+  --line-strong: #333941;
+
+  /* --- text -------------------------------------------------------------- */
+  --text: #f2eee7;
+  --text-2: #a3a7ad;
+  --text-3: #71767e;
+  --text-inverse: #08090b;
+
+  /* --- accents ----------------------------------------------------------- */
+  --amber: #e3a854;
+  --amber-strong: #f0bb68;
+  --amber-soft: rgba(227, 168, 84, 0.12);
+  --amber-line: rgba(227, 168, 84, 0.34);
+  --ember: #d96b33;
+  --ember-soft: rgba(217, 107, 51, 0.12);
+  --green: #56a97c;
+  --green-soft: rgba(86, 169, 124, 0.12);
+  --green-line: rgba(86, 169, 124, 0.34);
+  --red: #c0573f;
+  --red-soft: rgba(192, 87, 63, 0.13);
+  --blue: #5c8aa6;
+  --blue-soft: rgba(92, 138, 166, 0.12);
+
+  /* --- typography -------------------------------------------------------- */
+  --font-fa: 'Vazirmatn', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'Vazirmatn', ui-monospace, 'Cascadia Mono', monospace;
+
+  --fs-display: 40px;
+  --fs-h1: 25px;
+  --fs-h2: 18px;
+  --fs-h3: 15px;
+  --fs-body: 13.5px;
+  --fs-sm: 12px;
+  --fs-xs: 10.5px;
+  --fs-metric: 31px;
+  --fs-metric-sm: 22px;
+
+  --lh-tight: 1.25;
+  --lh-body: 1.75;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-black: 800;
+
+  /* --- spacing (4px base) ------------------------------------------------ */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-7: 32px;
+  --s-8: 40px;
+  --s-9: 56px;
+  --s-10: 72px;
+
+  /* --- radii ------------------------------------------------------------- */
+  --r-xs: 3px;
+  --r-sm: 5px;
+  --r-md: 8px;
+  --r-lg: 11px;
+  --r-xl: 16px;
+  --r-pill: 999px;
+
+  /* --- elevation --------------------------------------------------------- */
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-2: 0 8px 24px -12px rgba(0, 0, 0, 0.75);
+  --shadow-3: 0 24px 60px -24px rgba(0, 0, 0, 0.85);
+  --shadow-dock: 0 -12px 40px -20px rgba(0, 0, 0, 0.9);
+  --ring: 0 0 0 1px var(--line-strong);
+  --glow-amber: 0 0 0 1px var(--amber-line), 0 8px 30px -16px rgba(227, 168, 84, 0.55);
+
+  /* --- motion ------------------------------------------------------------ */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 120ms;
+  --dur-base: 220ms;
+  --dur-slow: 420ms;
+
+  /* --- layout ------------------------------------------------------------ */
+  --sidebar-w: 244px;
+  --header-h: 68px;
+  --dock-h: 76px;
+  --content-max: 1560px;
+}

@@ -20,13 +20,23 @@ export function OrderFlow() {
   return (
     <Stage bloom="right">
       <Frame align="top">
-        <div style={{ marginTop: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <div
+          style={{
+            marginTop: 8,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
+          }}
+        >
           <div>
             <Reveal start={0}>
               <Kicker>{script.kicker}</Kicker>
             </Reveal>
             <Reveal start={4} y={22}>
-              <h1 lang="fa" style={{ fontSize: 66, fontWeight: 750, margin: 0, letterSpacing: '-0.03em' }}>
+              <h1
+                lang="fa"
+                style={{ fontSize: 66, fontWeight: 750, margin: 0, letterSpacing: '-0.03em' }}
+              >
                 {script.title}
               </h1>
             </Reveal>
@@ -57,14 +67,22 @@ export function OrderFlow() {
             <div
               style={{
                 border: '1px solid rgba(255,255,255,0.10)',
-                background: 'linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.018))',
+                background:
+                  'linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.018))',
                 borderRadius: 22,
                 padding: '30px 30px 26px',
                 position: 'relative',
                 overflow: 'hidden',
               }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 17, color: 'rgba(242,238,231,0.42)' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  fontSize: 17,
+                  color: 'rgba(242,238,231,0.42)',
+                }}
+              >
                 <span>سفارش</span>
                 <span style={{ fontVariantNumeric: 'tabular-nums' }}>#{sample.reference}</span>
               </div>
@@ -72,18 +90,31 @@ export function OrderFlow() {
               <div style={{ marginTop: 22, fontSize: 30, fontWeight: 700 }} lang="fa">
                 {sample.customerNameFa}
               </div>
-              <div style={{ marginTop: 6, fontSize: 18, color: 'rgba(242,238,231,0.45)' }} lang="fa">
+              <div
+                style={{ marginTop: 6, fontSize: 18, color: 'rgba(242,238,231,0.45)' }}
+                lang="fa"
+              >
                 {sample.tableFa} · QR
               </div>
 
               <div style={{ height: 1, background: 'rgba(255,255,255,0.10)', margin: '24px 0' }} />
 
               {sample.items.map((item) => (
-                <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14 }} lang="fa">
+                <div
+                  key={item.id}
+                  style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14 }}
+                  lang="fa"
+                >
                   <span style={{ fontSize: 21 }}>
                     {faNumber(item.quantity)} × {item.nameFa}
                   </span>
-                  <span style={{ fontSize: 21, color: 'rgba(242,238,231,0.72)', fontVariantNumeric: 'tabular-nums' }}>
+                  <span
+                    style={{
+                      fontSize: 21,
+                      color: 'rgba(242,238,231,0.72)',
+                      fontVariantNumeric: 'tabular-nums',
+                    }}
+                  >
                     {faMoney(item.lineSubtotal)}
                   </span>
                 </div>
@@ -91,9 +122,13 @@ export function OrderFlow() {
 
               <div style={{ height: 1, background: 'rgba(255,255,255,0.10)', margin: '22px 0' }} />
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+              <div
+                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}
+              >
                 <span style={{ fontSize: 19, color: 'rgba(242,238,231,0.45)' }}>مبلغ کل</span>
-                <span style={{ fontSize: 34, fontWeight: 750, color: '#f0c98c' }}>{faMoney(sample.total)}</span>
+                <span style={{ fontSize: 34, fontWeight: 750, color: '#f0c98c' }}>
+                  {faMoney(sample.total)}
+                </span>
               </div>
 
               <div
@@ -142,7 +177,11 @@ export function OrderFlow() {
                     padding: '9px 18px',
                     borderRadius: 12,
                     border: `1px solid ${
-                      isLast ? 'rgba(227,168,84,0.42)' : revealed ? 'rgba(255,255,255,0.09)' : 'rgba(255,255,255,0.04)'
+                      isLast
+                        ? 'rgba(227,168,84,0.42)'
+                        : revealed
+                          ? 'rgba(255,255,255,0.09)'
+                          : 'rgba(255,255,255,0.04)'
                     }`,
                     background: isLast
                       ? 'rgba(227,168,84,0.09)'
@@ -171,7 +210,11 @@ export function OrderFlow() {
                       color: revealed ? '#f0c98c' : 'rgba(242,238,231,0.28)',
                     }}
                   >
-                    {revealed ? <Check size={15} strokeWidth={2.6} /> : <span style={{ fontSize: 13 }}>{faNumber(index + 1)}</span>}
+                    {revealed ? (
+                      <Check size={15} strokeWidth={2.6} />
+                    ) : (
+                      <span style={{ fontSize: 13 }}>{faNumber(index + 1)}</span>
+                    )}
                   </span>
                   <span
                     lang="fa"
@@ -183,7 +226,13 @@ export function OrderFlow() {
                   >
                     {event.titleFa}
                   </span>
-                  <span style={{ fontSize: 15, color: 'rgba(242,238,231,0.30)', fontVariantNumeric: 'tabular-nums' }}>
+                  <span
+                    style={{
+                      fontSize: 15,
+                      color: 'rgba(242,238,231,0.30)',
+                      fontVariantNumeric: 'tabular-nums',
+                    }}
+                  >
                     {faNumber(index + 1)}/{faNumber(events.length)}
                   </span>
                 </div>

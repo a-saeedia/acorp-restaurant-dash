@@ -62,8 +62,7 @@ export function Stage({
       />
       <AbsoluteFill
         style={{
-          background:
-            'radial-gradient(ellipse at 50% 50%, transparent 42%, rgba(0,0,0,0.62) 100%)',
+          background: 'radial-gradient(ellipse at 50% 50%, transparent 42%, rgba(0,0,0,0.62) 100%)',
         }}
       />
       {children}
@@ -72,7 +71,13 @@ export function Stage({
 }
 
 /** Safe-area wrapper: 96px gutters, content vertically centred. */
-export function Frame({ children, align = 'center' }: { children: ReactNode; align?: 'center' | 'top' }) {
+export function Frame({
+  children,
+  align = 'center',
+}: {
+  children: ReactNode;
+  align?: 'center' | 'top';
+}) {
   return (
     <AbsoluteFill
       style={{

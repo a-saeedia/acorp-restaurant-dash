@@ -9,7 +9,9 @@ import { PersianText, StatusPill } from './primitives';
 /* Status helpers                                                            */
 /* -------------------------------------------------------------------------- */
 
-export function orderStatusTone(status: OrderStatus): 'neutral' | 'amber' | 'green' | 'red' | 'blue' {
+export function orderStatusTone(
+  status: OrderStatus,
+): 'neutral' | 'amber' | 'green' | 'red' | 'blue' {
   switch (status) {
     case 'received':
       return 'blue';
@@ -53,7 +55,11 @@ export function OrderStatusTrail({ status }: { status: OrderStatus }) {
         const done = index < currentIndex;
         const current = index === currentIndex;
         return (
-          <div key={step} className="row" style={{ flex: index === TRAIL_STATUSES.length - 1 ? 0 : 1, gap: 0, minWidth: 0 }}>
+          <div
+            key={step}
+            className="row"
+            style={{ flex: index === TRAIL_STATUSES.length - 1 ? 0 : 1, gap: 0, minWidth: 0 }}
+          >
             <span
               className={cn(
                 'trail__node',
@@ -87,7 +93,14 @@ export interface OrderCardProps {
   compact?: boolean;
 }
 
-export function OrderCard({ order, selected = false, fresh = false, onSelect, actions, compact = false }: OrderCardProps) {
+export function OrderCard({
+  order,
+  selected = false,
+  fresh = false,
+  onSelect,
+  actions,
+  compact = false,
+}: OrderCardProps) {
   const ChannelIcon = order.channel === 'qr' ? QrCode : Truck;
 
   return (
@@ -117,7 +130,9 @@ export function OrderCard({ order, selected = false, fresh = false, onSelect, ac
             <ChannelIcon size={12} strokeWidth={1.8} />
             <PersianText size={11}>{CHANNEL_FA[order.channel]}</PersianText>
           </span>
-          <span aria-hidden style={{ opacity: 0.4 }}>·</span>
+          <span aria-hidden style={{ opacity: 0.4 }}>
+            ·
+          </span>
           <span className="t-num">{faTime(order.createdAtIso)}</span>
         </div>
       </header>
@@ -149,7 +164,9 @@ export function OrderCard({ order, selected = false, fresh = false, onSelect, ac
         <div className="order__meta" style={{ gap: 12 }}>
           <span className="row" style={{ gap: 4 }}>
             {order.channel === 'qr' ? <MapPin size={12} /> : <User size={12} />}
-            <PersianText size={11}>{order.channel === 'qr' ? order.tableFa : order.customerNameFa}</PersianText>
+            <PersianText size={11}>
+              {order.channel === 'qr' ? order.tableFa : order.customerNameFa}
+            </PersianText>
           </span>
           <span className="row" style={{ gap: 4 }}>
             <span>وضعیت پرداخت:</span>

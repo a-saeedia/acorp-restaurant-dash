@@ -15,7 +15,10 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT_DIR = resolve(ROOT, 'out/stills');
 const DEFAULT_FRAMES = [30, 210, 420, 700, 980, 1240, 1500, 1720, 1960, 2320];
 
-const frames = process.argv.slice(2).map(Number).filter((value) => Number.isFinite(value));
+const frames = process.argv
+  .slice(2)
+  .map(Number)
+  .filter((value) => Number.isFinite(value));
 const targets = frames.length > 0 ? frames : DEFAULT_FRAMES;
 
 mkdirSync(OUT_DIR, { recursive: true });
@@ -33,7 +36,9 @@ const composition = await selectComposition({
   port: 3055,
 });
 
-console.log(`composition: ${composition.width}×${composition.height} @ ${composition.fps}fps, ${composition.durationInFrames} frames`);
+console.log(
+  `composition: ${composition.width}×${composition.height} @ ${composition.fps}fps, ${composition.durationInFrames} frames`,
+);
 
 for (const frame of targets) {
   const output = resolve(OUT_DIR, `frame-${String(frame).padStart(4, '0')}.png`);

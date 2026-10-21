@@ -17,13 +17,7 @@ import { SIMULATION_SEED, SIMULATION_VERSION } from '../../simulation/config';
 import { useSimulation } from '../state/SimulationProvider';
 
 export type ScreenId =
-  | 'overview'
-  | 'orders'
-  | 'kitchen'
-  | 'inventory'
-  | 'suppliers'
-  | 'analytics'
-  | 'marketing';
+  'overview' | 'orders' | 'kitchen' | 'inventory' | 'suppliers' | 'analytics' | 'marketing';
 
 const NAV: Array<{ id: ScreenId; icon: typeof LayoutDashboard }> = [
   { id: 'overview', icon: LayoutDashboard },
@@ -46,12 +40,14 @@ export function Sidebar({
 
   const badges: Partial<Record<ScreenId, number>> = {
     kitchen: state.orders.filter(
-      (order) => order.status === 'received' || order.status === 'confirmed' || order.status === 'preparing',
+      (order) =>
+        order.status === 'received' || order.status === 'confirmed' || order.status === 'preparing',
     ).length,
     inventory: state.notifications.filter(
       (notification) => notification.kind === 'inventory' && !notification.read,
     ).length,
-    suppliers: state.purchaseRequests.filter((request) => request.status === 'recommendation').length,
+    suppliers: state.purchaseRequests.filter((request) => request.status === 'recommendation')
+      .length,
   };
 
   return (
@@ -94,7 +90,8 @@ export function Sidebar({
           <span>شبیه‌سازی کسب‌وکار</span>
         </div>
         <span>
-          تمام اعداد از یک موتور قطعی با دانهٔ ثابت تولید می‌شوند؛ هیچ دادهٔ واقعی یا اتصال به سرویس خارجی وجود ندارد.
+          تمام اعداد از یک موتور قطعی با دانهٔ ثابت تولید می‌شوند؛ هیچ دادهٔ واقعی یا اتصال به سرویس
+          خارجی وجود ندارد.
         </span>
         <div className="sidebar__seed">
           <span>SEED</span>

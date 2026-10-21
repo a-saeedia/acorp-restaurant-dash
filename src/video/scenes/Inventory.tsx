@@ -15,20 +15,34 @@ export function Inventory() {
   const frame = useCurrentFrame();
   const script = SCRIPT.Inventory;
 
-  const beforeRows = inventoryRows(FILM.base).filter((row) => WATCHED.includes(row.ingredient.id as (typeof WATCHED)[number]));
-  const afterRows = inventoryRows(FILM.after).filter((row) => WATCHED.includes(row.ingredient.id as (typeof WATCHED)[number]));
+  const beforeRows = inventoryRows(FILM.base).filter((row) =>
+    WATCHED.includes(row.ingredient.id as (typeof WATCHED)[number]),
+  );
+  const afterRows = inventoryRows(FILM.after).filter((row) =>
+    WATCHED.includes(row.ingredient.id as (typeof WATCHED)[number]),
+  );
   const request = openPurchaseRequests(FILM.after).find((item) => item.ingredientId === 'ing-beef');
 
   return (
     <Stage bloom="right">
       <Frame align="top">
-        <div style={{ marginTop: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <div
+          style={{
+            marginTop: 12,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
+          }}
+        >
           <div>
             <Reveal start={0}>
               <Kicker>{script.kicker}</Kicker>
             </Reveal>
             <Reveal start={4} y={22}>
-              <h1 lang="fa" style={{ fontSize: 68, fontWeight: 750, margin: 0, letterSpacing: '-0.03em' }}>
+              <h1
+                lang="fa"
+                style={{ fontSize: 68, fontWeight: 750, margin: 0, letterSpacing: '-0.03em' }}
+              >
                 {script.title}
               </h1>
             </Reveal>
@@ -72,12 +86,19 @@ export function Inventory() {
                   <div
                     style={{
                       border: '1px solid rgba(255,255,255,0.09)',
-                      background: 'linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.012))',
+                      background:
+                        'linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.012))',
                       borderRadius: 20,
                       padding: '26px 28px',
                     }}
                   >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'baseline',
+                      }}
+                    >
                       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                         <span
                           style={{
@@ -111,9 +132,17 @@ export function Inventory() {
                           </span>
                         ) : null}
                       </div>
-                      <span style={{ fontSize: 30, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
+                      <span
+                        style={{
+                          fontSize: 30,
+                          fontWeight: 700,
+                          fontVariantNumeric: 'tabular-nums',
+                        }}
+                      >
                         {faNumber(quantity)}{' '}
-                        <span style={{ fontSize: 16, color: 'rgba(242,238,231,0.4)' }}>{row.ingredient.unitLabelFa}</span>
+                        <span style={{ fontSize: 16, color: 'rgba(242,238,231,0.4)' }}>
+                          {row.ingredient.unitLabelFa}
+                        </span>
                       </span>
                     </div>
 
@@ -130,7 +159,9 @@ export function Inventory() {
                       <div
                         style={{
                           height: '100%',
-                          width: `${Math.min(100, (level / SCALE) * 100)}%`,
+                          // `level` is 0–100 where 100 = 200% of the reorder
+                          // threshold, so the ratio is level / 50.
+                          width: `${Math.min(100, (level / 50 / SCALE) * 100)}%`,
                           borderRadius: 99,
                           background: isLow
                             ? 'linear-gradient(90deg, #d96b33, #e8a058)'
@@ -159,9 +190,12 @@ export function Inventory() {
                         color: 'rgba(242,238,231,0.42)',
                       }}
                     >
-                      <span>آستانه: {faNumber(row.ingredient.reorderThreshold)} {row.ingredient.unitLabelFa}</span>
+                      <span>
+                        آستانه: {faNumber(row.ingredient.reorderThreshold)}{' '}
+                        {row.ingredient.unitLabelFa}
+                      </span>
                       <span style={{ fontVariantNumeric: 'tabular-nums' }}>
-                        {faPercent(Math.round(level * 100))} از آستانه
+                        {faPercent((level / 50) * 100, 0)} از آستانه
                       </span>
                     </div>
                   </div>
@@ -175,7 +209,8 @@ export function Inventory() {
               <div
                 style={{
                   border: '1px solid rgba(227,168,84,0.34)',
-                  background: 'linear-gradient(180deg, rgba(227,168,84,0.12), rgba(227,168,84,0.03))',
+                  background:
+                    'linear-gradient(180deg, rgba(227,168,84,0.12), rgba(227,168,84,0.03))',
                   borderRadius: 22,
                   padding: '28px 28px 26px',
                 }}
@@ -187,21 +222,35 @@ export function Inventory() {
                   </span>
                 </div>
 
-                <div lang="fa" style={{ fontSize: 27, fontWeight: 700, marginTop: 20, lineHeight: 1.4 }}>
+                <div
+                  lang="fa"
+                  style={{ fontSize: 27, fontWeight: 700, marginTop: 20, lineHeight: 1.4 }}
+                >
                   {faNumber(request.recommendedQuantity)} {request.unitLabelFa}
                   <br />
                   {request.ingredientNameFa}
                 </div>
 
-                <div style={{ height: 1, background: 'rgba(255,255,255,0.10)', margin: '22px 0' }} />
+                <div
+                  style={{ height: 1, background: 'rgba(255,255,255,0.10)', margin: '22px 0' }}
+                />
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 17 }}>
                   <span style={{ color: 'rgba(242,238,231,0.45)' }}>تأمین‌کننده</span>
                   <span lang="fa">{request.supplierNameFa}</span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 17, marginTop: 12 }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    fontSize: 17,
+                    marginTop: 12,
+                  }}
+                >
                   <span style={{ color: 'rgba(242,238,231,0.45)' }}>هزینهٔ برآوردی</span>
-                  <span style={{ color: '#f0c98c', fontWeight: 650 }}>{faMoney(request.estimatedCost)}</span>
+                  <span style={{ color: '#f0c98c', fontWeight: 650 }}>
+                    {faMoney(request.estimatedCost)}
+                  </span>
                 </div>
 
                 <div
@@ -223,7 +272,10 @@ export function Inventory() {
 
       <Caption
         text={script.caption}
-        opacity={interpolate(frame, [60, 80], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })}
+        opacity={interpolate(frame, [60, 80], [0, 1], {
+          extrapolateLeft: 'clamp',
+          extrapolateRight: 'clamp',
+        })}
       />
     </Stage>
   );

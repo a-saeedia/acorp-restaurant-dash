@@ -40,14 +40,29 @@ export function Sparkline({
 
   const visible = Math.max(1, Math.ceil(points.length * Math.min(1, Math.max(0, progress))));
   const drawn = points.slice(0, visible);
-  const path = drawn.map(([x, y], index) => `${index === 0 ? 'M' : 'L'}${x.toFixed(2)},${y.toFixed(2)}`).join(' ');
+  const path = drawn
+    .map(([x, y], index) => `${index === 0 ? 'M' : 'L'}${x.toFixed(2)},${y.toFixed(2)}`)
+    .join(' ');
   const area = `${path} L${(drawn[drawn.length - 1]?.[0] ?? 0).toFixed(2)},${height} L0,${height} Z`;
   const last = drawn[drawn.length - 1];
 
   return (
-    <svg className="spark" width={width} height={height} viewBox={`0 0 ${width} ${height}`} aria-hidden>
+    <svg
+      className="spark"
+      width={width}
+      height={height}
+      viewBox={`0 0 ${width} ${height}`}
+      aria-hidden
+    >
       {fill ? <path d={area} fill={color} opacity={0.1} /> : null}
-      <path d={path} fill="none" stroke={color} strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d={path}
+        fill="none"
+        stroke={color}
+        strokeWidth={1.4}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
       {last ? <circle cx={last[0]} cy={last[1]} r={1.8} fill={color} /> : null}
     </svg>
   );
@@ -86,7 +101,8 @@ export function MetricCard({
   style,
 }: MetricCardProps) {
   const direction = delta === null ? 'flat' : delta > 0.05 ? 'up' : delta < -0.05 ? 'down' : 'flat';
-  const DeltaIcon = direction === 'up' ? ArrowUpRight : direction === 'down' ? ArrowDownRight : Minus;
+  const DeltaIcon =
+    direction === 'up' ? ArrowUpRight : direction === 'down' ? ArrowDownRight : Minus;
 
   return (
     <article className={cn('metric', className)} style={style}>

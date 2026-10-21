@@ -1,12 +1,6 @@
 import { useMemo } from 'react';
 import { Megaphone, MousePointerClick, Repeat2, Target } from 'lucide-react';
-import {
-  HorizontalBars,
-  MetricCard,
-  Panel,
-  PeriodToggle,
-  StatusPill,
-} from '../../components';
+import { HorizontalBars, MetricCard, Panel, PeriodToggle, StatusPill } from '../../components';
 import { faMoney, faMoneyCompact, faNumber, faPercent } from '../../lib/fa';
 import { SECTIONS_FA } from '../../lib/labels';
 import { marketingFor } from '../../simulation/selectors';
@@ -100,7 +94,10 @@ export function MarketingScreen() {
             <span style={{ color: 'var(--text-3)' }}>میانگین سفارش</span>
             <span>{faMoneyCompact(snapshot.averageOrderValue)}</span>
           </div>
-          <div className="row" style={{ justifyContent: 'space-between', fontSize: 11, marginTop: 6 }}>
+          <div
+            className="row"
+            style={{ justifyContent: 'space-between', fontSize: 11, marginTop: 6 }}
+          >
             <span style={{ color: 'var(--text-3)' }}>نرخ مشتری تکراری</span>
             <span>{faPercent(snapshot.repeatCustomerRate, 1)}</span>
           </div>
@@ -146,9 +143,14 @@ export function MarketingScreen() {
             </div>
             <div className="campaign-row__metric">
               <StatusPill
-                tone={campaign.revenueAttributed / Math.max(1, campaign.spend) >= 5 ? 'green' : 'amber'}
+                tone={
+                  campaign.revenueAttributed / Math.max(1, campaign.spend) >= 5 ? 'green' : 'amber'
+                }
               >
-                {faNumber(campaign.revenueAttributed / Math.max(1, campaign.spend), { decimals: 1 })}×
+                {faNumber(campaign.revenueAttributed / Math.max(1, campaign.spend), {
+                  decimals: 1,
+                })}
+                ×
               </StatusPill>
             </div>
           </div>

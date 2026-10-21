@@ -88,12 +88,7 @@ export type OrderChannel = 'qr' | 'delivery';
  * always entered explicitly — never by skipping states.
  */
 export type OrderStatus =
-  | 'received'
-  | 'confirmed'
-  | 'preparing'
-  | 'ready'
-  | 'completed'
-  | 'cancelled';
+  'received' | 'confirmed' | 'preparing' | 'ready' | 'completed' | 'cancelled';
 
 export type PaymentStatus = 'paid' | 'pending' | 'refunded';
 
@@ -288,11 +283,7 @@ export interface AnalyticsSnapshot {
 /* -------------------------------------------------------------------------- */
 
 export type CampaignChannel =
-  | 'instagram'
-  | 'google-maps'
-  | 'referral'
-  | 'delivery-app'
-  | 'in-store-qr';
+  'instagram' | 'google-maps' | 'referral' | 'delivery-app' | 'in-store-qr';
 
 export interface MarketingCampaign {
   id: string;

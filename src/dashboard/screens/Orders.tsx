@@ -1,13 +1,5 @@
 import { useMemo, useState } from 'react';
-import {
-  BadgeCheck,
-  ChefHat,
-  CreditCard,
-  MapPin,
-  QrCode,
-  ReceiptText,
-  Truck,
-} from 'lucide-react';
+import { BadgeCheck, ChefHat, CreditCard, MapPin, QrCode, ReceiptText, Truck } from 'lucide-react';
 import {
   EmptyState,
   KeyValue,
@@ -170,7 +162,9 @@ export function OrdersScreen() {
                 </div>
                 <div className="row" style={{ gap: 8, marginTop: 6, color: 'var(--text-3)' }}>
                   <MapPin size={12} />
-                  <span style={{ fontSize: 11 }}>{selected.tableFa ?? selected.customerNameFa}</span>
+                  <span style={{ fontSize: 11 }}>
+                    {selected.tableFa ?? selected.customerNameFa}
+                  </span>
                 </div>
               </Panel>
               <Panel title="زمان" bodyClassName="panel__body--tight">

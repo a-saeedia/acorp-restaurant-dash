@@ -18,12 +18,7 @@
  * come from the synthetic daily dataset and are flagged as such.
  */
 
-import {
-  CUSTOMIZATION_BY_ID,
-  EXPENSES,
-  INGREDIENT_BY_ID,
-  MENU_BY_ID,
-} from './catalog';
+import { CUSTOMIZATION_BY_ID, EXPENSES, INGREDIENT_BY_ID, MENU_BY_ID } from './catalog';
 import {
   DEMO_DAY_KEY,
   OPEX_DAYS_PER_MONTH,
@@ -99,7 +94,10 @@ export function ingredientCostMap(lines: readonly RecipeLine[]): Map<string, Tom
   for (const line of lines) {
     const ingredient = INGREDIENT_BY_ID.get(line.ingredientId);
     if (!ingredient) continue;
-    map.set(line.ingredientId, (map.get(line.ingredientId) ?? 0) + line.quantity * ingredient.unitCost);
+    map.set(
+      line.ingredientId,
+      (map.get(line.ingredientId) ?? 0) + line.quantity * ingredient.unitCost,
+    );
   }
   return map;
 }
@@ -422,7 +420,10 @@ export function buildAnalyticsSnapshot(
       });
     }
   } else {
-    const buckets = new Map<string, { dayKey: DayKey; labelFa: string; netSales: number; orderCount: number }>();
+    const buckets = new Map<
+      string,
+      { dayKey: DayKey; labelFa: string; netSales: number; orderCount: number }
+    >();
     for (const day of days) {
       const { key, labelFa } = monthBucket(day.dayKey);
       const existing = buckets.get(key);
@@ -431,7 +432,12 @@ export function buildAnalyticsSnapshot(
         existing.netSales += net;
         existing.orderCount += day.orderCount;
       } else {
-        buckets.set(key, { dayKey: day.dayKey, labelFa, netSales: net, orderCount: day.orderCount });
+        buckets.set(key, {
+          dayKey: day.dayKey,
+          labelFa,
+          netSales: net,
+          orderCount: day.orderCount,
+        });
       }
     }
     series.push(...buckets.values());
@@ -452,22 +458,25 @@ export function buildAnalyticsSnapshot(
     .slice(0, 5);
 
   const channelTotal = total.qrOrders + total.deliveryOrders;
-  const channelSplit: AnalyticsSnapshot['channelSplit'] = (['qr', 'delivery'] as OrderChannel[]).map(
-    (channel) => {
-      const orders = channel === 'qr' ? total.qrOrders : total.deliveryOrders;
-      return {
-        channel,
-        orders,
-        share: channelTotal === 0 ? 0 : round1((orders / channelTotal) * 100),
-      };
-    },
-  );
+  const channelSplit: AnalyticsSnapshot['channelSplit'] = (
+    ['qr', 'delivery'] as OrderChannel[]
+  ).map((channel) => {
+    const orders = channel === 'qr' ? total.qrOrders : total.deliveryOrders;
+    return {
+      channel,
+      orders,
+      share: channelTotal === 0 ? 0 : round1((orders / channelTotal) * 100),
+    };
+  });
 
   const ingredientSpend = buildIngredientSpend(total);
-  const inventoryValue = Object.entries(source.inventory).reduce((sum, [ingredientId, quantity]) => {
-    const ingredient = INGREDIENT_BY_ID.get(ingredientId);
-    return sum + (ingredient ? ingredient.unitCost * quantity : 0);
-  }, 0);
+  const inventoryValue = Object.entries(source.inventory).reduce(
+    (sum, [ingredientId, quantity]) => {
+      const ingredient = INGREDIENT_BY_ID.get(ingredientId);
+      return sum + (ingredient ? ingredient.unitCost * quantity : 0);
+    },
+    0,
+  );
 
   return {
     period,
@@ -579,7 +588,10 @@ export function buildMarketingSnapshot(
 
   const rng = mulberry32(seedFrom('marketing', `${period}:${endDayKey}`));
   const repeatCustomerRate = round1(31 + rng() * 11);
-  const totalChannelRevenue = [...channelMap.values()].reduce((sum, value) => sum + value.revenue, 0);
+  const totalChannelRevenue = [...channelMap.values()].reduce(
+    (sum, value) => sum + value.revenue,
+    0,
+  );
 
   return {
     period,

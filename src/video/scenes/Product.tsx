@@ -32,13 +32,23 @@ export function Product() {
   return (
     <Stage bloom="center">
       <Frame align="top">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: 0 }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
+            marginTop: 0,
+          }}
+        >
           <div>
             <Reveal start={0}>
               <Kicker>{script.kicker}</Kicker>
             </Reveal>
             <Reveal start={4} y={18}>
-              <h1 lang="fa" style={{ fontSize: 58, fontWeight: 750, margin: 0, letterSpacing: '-0.03em' }}>
+              <h1
+                lang="fa"
+                style={{ fontSize: 58, fontWeight: 750, margin: 0, letterSpacing: '-0.03em' }}
+              >
                 {script.title}
               </h1>
             </Reveal>
@@ -109,7 +119,15 @@ export function Product() {
                 background: 'rgba(255,255,255,0.014)',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingInline: 8, marginBottom: 16 }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  paddingInline: 8,
+                  marginBottom: 16,
+                }}
+              >
                 <span
                   style={{
                     width: 30,
@@ -151,7 +169,15 @@ export function Product() {
             </div>
 
             {/* content */}
-            <div style={{ flex: 1, padding: '24px 26px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div
+              style={{
+                flex: 1,
+                padding: '24px 26px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 16,
+              }}
+            >
               <div style={{ display: 'flex', gap: 12 }}>
                 {metrics.map((metric, index) => (
                   <div
@@ -171,7 +197,9 @@ export function Product() {
                     <div lang="fa" style={{ fontSize: 12, color: 'rgba(242,238,231,0.38)' }}>
                       {metric.label}
                     </div>
-                    <div style={{ fontSize: 24, fontWeight: 700, marginTop: 6 }}>{metric.value}</div>
+                    <div style={{ fontSize: 24, fontWeight: 700, marginTop: 6 }}>
+                      {metric.value}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -192,7 +220,15 @@ export function Product() {
                     </span>
                     <span style={{ color: '#f0c98c' }}>{faMoneyCompact(pnl.netSales)}</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8, height: 190, marginTop: 22 }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-end',
+                      gap: 8,
+                      height: 190,
+                      marginTop: 22,
+                    }}
+                  >
                     {bars.map((bar, index) => {
                       const grow = interpolate(frame, [54 + index * 3, 84 + index * 3], [0, 1], {
                         extrapolateLeft: 'clamp',
@@ -230,11 +266,16 @@ export function Product() {
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 13, marginTop: 16 }}>
                     {snapshot.topItems.slice(0, 5).map((item, index) => (
-                      <div key={item.menuItemId} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}>
+                      <div
+                        key={item.menuItemId}
+                        style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}
+                      >
                         <span lang="fa" style={{ color: 'rgba(242,238,231,0.72)' }}>
                           {faNumber(index + 1)}. {item.nameFa}
                         </span>
-                        <span style={{ color: 'rgba(242,238,231,0.42)' }}>{faNumber(item.quantity)}</span>
+                        <span style={{ color: 'rgba(242,238,231,0.42)' }}>
+                          {faNumber(item.quantity)}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -247,7 +288,10 @@ export function Product() {
 
       <Caption
         text={script.caption}
-        opacity={interpolate(frame, [60, 80], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })}
+        opacity={interpolate(frame, [60, 80], [0, 1], {
+          extrapolateLeft: 'clamp',
+          extrapolateRight: 'clamp',
+        })}
       />
     </Stage>
   );

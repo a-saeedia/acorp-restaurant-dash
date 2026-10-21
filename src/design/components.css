@@ -23,12 +23,16 @@
 
 .panel--raised {
   background: var(--surface-2);
-  box-shadow: var(--shadow-2), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  box-shadow:
+    var(--shadow-2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .panel--accent {
   border-color: var(--amber-line);
-  box-shadow: var(--glow-amber), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  box-shadow:
+    var(--glow-amber),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .panel__head {
@@ -271,12 +275,7 @@
   inset-block-start: 0;
   inset-inline: 0;
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(227, 168, 84, 0.45),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(227, 168, 84, 0.45), transparent);
   opacity: 0.55;
 }
 
@@ -385,11 +384,7 @@
 
 .workflow__step--active {
   border-color: var(--amber-line);
-  background: linear-gradient(
-    180deg,
-    rgba(227, 168, 84, 0.09),
-    rgba(227, 168, 84, 0.02)
-  );
+  background: linear-gradient(180deg, rgba(227, 168, 84, 0.09), rgba(227, 168, 84, 0.02));
 }
 
 .workflow__step--done {
@@ -499,11 +494,7 @@
 
 .order--selected {
   border-color: var(--amber-line);
-  background: linear-gradient(
-    180deg,
-    rgba(227, 168, 84, 0.07),
-    rgba(227, 168, 84, 0.015)
-  );
+  background: linear-gradient(180deg, rgba(227, 168, 84, 0.07), rgba(227, 168, 84, 0.015));
 }
 
 .order--fresh {
@@ -697,7 +688,9 @@
 
 .ticket--fresh {
   border-color: var(--amber-line);
-  box-shadow: 0 0 0 1px rgba(227, 168, 84, 0.12), 0 12px 30px -18px rgba(227, 168, 84, 0.5);
+  box-shadow:
+    0 0 0 1px rgba(227, 168, 84, 0.12),
+    0 12px 30px -18px rgba(227, 168, 84, 0.5);
   animation: order-in 420ms var(--ease-out) both;
 }
 

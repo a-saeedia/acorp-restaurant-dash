@@ -71,11 +71,13 @@ export function AnalyticsScreen() {
           <span className="sim-ev__dot" />
           <div className="sim-ev__body">
             <div className="sim-ev__row">
-              <span style={{ fontSize: 11.5, fontWeight: 600 }}>پنجرهٔ جاری شامل روز ناتمام است</span>
+              <span style={{ fontSize: 11.5, fontWeight: 600 }}>
+                پنجرهٔ جاری شامل روز ناتمام است
+              </span>
             </div>
             <span style={{ fontSize: 10.5, color: 'var(--text-3)' }}>
-              هزینهٔ عملیاتی به نسبت {faPercent(snapshot.dayProgress * 100, 0)} از روز سرویس محاسبه شده
-              تا حاشیهٔ سود واقعی‌تر باشد.
+              هزینهٔ عملیاتی به نسبت {faPercent(snapshot.dayProgress * 100, 0)} از روز سرویس محاسبه
+              شده تا حاشیهٔ سود واقعی‌تر باشد.
             </span>
           </div>
         </div>
@@ -205,7 +207,9 @@ export function AnalyticsScreen() {
           )}
           مقایسه با پنجرهٔ برابر قبلی
         </span>
-        <span className={cn('t-code', deltaTone(snapshot.comparison.netProfitPct) === 'red' && 't-red')}>
+        <span
+          className={cn('t-code', deltaTone(snapshot.comparison.netProfitPct) === 'red' && 't-red')}
+        >
           {snapshot.fromDayKey} → {snapshot.toDayKey}
         </span>
       </div>

@@ -203,9 +203,7 @@ export function SimulationProvider({ children }: { children: ReactNode }) {
 
   const recentEvents = useMemo(
     () =>
-      events
-        .filter((event) => Boolean(state.processed[event.id]))
-        .sort((a, b) => b.atMs - a.atMs),
+      events.filter((event) => Boolean(state.processed[event.id])).sort((a, b) => b.atMs - a.atMs),
     [events, state.processed],
   );
 

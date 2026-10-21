@@ -49,7 +49,13 @@ export interface RevenueChartProps {
   className?: string;
 }
 
-export function RevenueChart({ points, width, height, showOrders = false, className }: RevenueChartProps) {
+export function RevenueChart({
+  points,
+  width,
+  height,
+  showOrders = false,
+  className,
+}: RevenueChartProps) {
   return (
     <div className={cn('chart', className)} style={{ width, height }}>
       <AreaChart
@@ -224,7 +230,12 @@ export interface HorizontalBarsProps {
  * Hand-rolled bars rather than a chart library: no measurement, no layout
  * thrash, and identical pixels in the dashboard and in a rendered frame.
  */
-export function HorizontalBars({ items, max, formatValue = faMoneyCompact, className }: HorizontalBarsProps) {
+export function HorizontalBars({
+  items,
+  max,
+  formatValue = faMoneyCompact,
+  className,
+}: HorizontalBarsProps) {
   const ceiling = max ?? Math.max(1, ...items.map((item) => item.value));
 
   return (

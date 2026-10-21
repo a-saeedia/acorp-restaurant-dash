@@ -19,7 +19,14 @@ export function Outro() {
     <Stage bloom="center">
       <AbsoluteFill style={{ opacity: fadeOut }}>
         <Frame>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+            }}
+          >
             <Reveal start={0} y={0}>
               <div
                 style={{
@@ -43,7 +50,10 @@ export function Outro() {
             </Reveal>
 
             <Reveal start={38} y={12}>
-              <div lang="fa" style={{ fontSize: 20, color: 'rgba(242,238,231,0.45)', marginTop: 12 }}>
+              <div
+                lang="fa"
+                style={{ fontSize: 20, color: 'rgba(242,238,231,0.45)', marginTop: 12 }}
+              >
                 {script.caption}
               </div>
             </Reveal>

@@ -1,12 +1,6 @@
 import { useMemo } from 'react';
 import { Boxes, History, TriangleAlert } from 'lucide-react';
-import {
-  EmptyState,
-  IngredientRow,
-  InventorySummary,
-  Panel,
-  StatusPill,
-} from '../../components';
+import { EmptyState, IngredientRow, InventorySummary, Panel, StatusPill } from '../../components';
 import { faMoney, faNumber } from '../../lib/fa';
 import { INVENTORY_TX_FA } from '../../lib/labels';
 import {
@@ -48,7 +42,11 @@ export function InventoryScreen() {
       <InventorySummary rows={rows} totalValue={totalValue} />
 
       <div className="grid grid-2-1">
-        <Panel title="اقلام انبار" subtitle={`${faNumber(rows.length)} قلم`} bodyClassName="panel__body--tight">
+        <Panel
+          title="اقلام انبار"
+          subtitle={`${faNumber(rows.length)} قلم`}
+          bodyClassName="panel__body--tight"
+        >
           <table className="table">
             <thead>
               <tr>
@@ -93,10 +91,24 @@ export function InventoryScreen() {
                   <td className="num">{faMoney(row.value, { suffix: false })}</td>
                   <td className="end">
                     <StatusPill
-                      tone={isNearThreshold(row) ? 'blue' : row.status === 'healthy' ? 'green' : row.status === 'low' ? 'amber' : 'red'}
+                      tone={
+                        isNearThreshold(row)
+                          ? 'blue'
+                          : row.status === 'healthy'
+                            ? 'green'
+                            : row.status === 'low'
+                              ? 'amber'
+                              : 'red'
+                      }
                       dot={row.status !== 'healthy'}
                     >
-                      {isNearThreshold(row) ? 'نزدیک حد' : row.status === 'healthy' ? 'متعادل' : row.status === 'low' ? 'کم' : 'بحرانی'}
+                      {isNearThreshold(row)
+                        ? 'نزدیک حد'
+                        : row.status === 'healthy'
+                          ? 'متعادل'
+                          : row.status === 'low'
+                            ? 'کم'
+                            : 'بحرانی'}
                     </StatusPill>
                   </td>
                 </tr>

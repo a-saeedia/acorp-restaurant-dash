@@ -77,7 +77,11 @@ export function EventLog({ events, limit = 8, className }: EventLogProps) {
           <li key={event.id} className={cn('evt__row', isLatest && 'evt__row--latest')}>
             <span className="evt__rail">
               <span className="evt__node">
-                {isLatest ? <Activity size={9} strokeWidth={3} /> : <CircleCheck size={9} strokeWidth={2.5} />}
+                {isLatest ? (
+                  <Activity size={9} strokeWidth={3} />
+                ) : (
+                  <CircleCheck size={9} strokeWidth={2.5} />
+                )}
               </span>
             </span>
             <div className="evt__body">

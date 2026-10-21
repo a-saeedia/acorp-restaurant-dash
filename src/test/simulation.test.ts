@@ -15,11 +15,7 @@ import {
   generateHistory,
   generateTodayOrders,
 } from '../simulation/seed';
-import {
-  aggregateOrders,
-  buildMarketingSnapshot,
-  pctChange,
-} from '../simulation/analytics';
+import { aggregateOrders, buildMarketingSnapshot, pctChange } from '../simulation/analytics';
 import { orderConsumption } from '../simulation/orders';
 
 const classic = MENU_BY_ID.get('menu-classic');

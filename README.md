@@ -11,13 +11,13 @@ so the dashboard, the tests and the film can never disagree.
 
 ## What is in here
 
-| Surface | Path | Stack |
-| --- | --- | --- |
-| Operations dashboard | `src/dashboard` | React 19, Vite 8, Recharts |
-| Simulation engine | `src/simulation` | Pure TypeScript, zero deps |
-| Shared UI kit | `src/components` + `src/design` | CSS custom properties |
-| Commercial (88s, 1080p) | `src/video` | Remotion 4 |
-| Tests | `src/test` | Vitest + Testing Library |
+| Surface                 | Path                            | Stack                      |
+| ----------------------- | ------------------------------- | -------------------------- |
+| Operations dashboard    | `src/dashboard`                 | React 19, Vite 8, Recharts |
+| Simulation engine       | `src/simulation`                | Pure TypeScript, zero deps |
+| Shared UI kit           | `src/components` + `src/design` | CSS custom properties      |
+| Commercial (88s, 1080p) | `src/video`                     | Remotion 4                 |
+| Tests                   | `src/test`                      | Vitest + Testing Library   |
 
 Nine screens: overview, orders, kitchen, inventory, suppliers, analytics,
 marketing, notifications, and a global simulation dock that replays the full
@@ -89,7 +89,7 @@ No server, no database, no secrets. The bundle is ~710 kB (209 kB gzip).
 ## Licensing — read this
 
 - **This repository's code:** MIT (see `LICENSE`).
-- **Remotion:** Remotion is *source-available*, not OSI open source. It is free
+- **Remotion:** Remotion is _source-available_, not OSI open source. It is free
   for individuals and companies with up to 3 employees; companies with 4 or more
   employees need a paid Company License. The commercial in `src/video` therefore
   inherits Remotion's terms. See <https://remotion.dev/license>.
@@ -107,17 +107,17 @@ typography because there is no Persian TTS on the build machine — no fake
 voice-over, no borrowed audio. The soundtrack in `public/audio/bed.wav` is
 synthesised from sine waves and filtered noise by `scripts/generate-audio.mjs`.
 
-| # | Scene | Length |
-| --- | --- | --- |
-| 1 | Cold open — wordmark | 6s |
-| 2 | The problem — three leaks | 8s |
-| 3 | Order flow — 11 events | 14s |
-| 4 | Kitchen — same instant | 10s |
-| 5 | Inventory — before it runs out | 12s |
-| 6 | Analytics — profit, not revenue | 13s |
-| 7 | Marketing — attribution | 8s |
-| 8 | Product — one screen | 10s |
-| 9 | Outro | 7s |
+| #   | Scene                           | Length |
+| --- | ------------------------------- | ------ |
+| 1   | Cold open — wordmark            | 6s     |
+| 2   | The problem — three leaks       | 8s     |
+| 3   | Order flow — 11 events          | 14s    |
+| 4   | Kitchen — same instant          | 10s    |
+| 5   | Inventory — before it runs out  | 12s    |
+| 6   | Analytics — profit, not revenue | 13s    |
+| 7   | Marketing — attribution         | 8s     |
+| 8   | Product — one screen            | 10s    |
+| 9   | Outro                           | 7s     |
 
 Total: **2,640 frames / 88 seconds**.
 

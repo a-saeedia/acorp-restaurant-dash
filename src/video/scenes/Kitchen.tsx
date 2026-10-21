@@ -18,19 +18,31 @@ export function Kitchen() {
   return (
     <Stage bloom="left">
       <Frame align="top">
-        <div style={{ marginTop: 26, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <div
+          style={{
+            marginTop: 26,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
+          }}
+        >
           <div>
             <Reveal start={0}>
               <Kicker>{script.kicker}</Kicker>
             </Reveal>
             <Reveal start={5} y={20}>
-              <h1 lang="fa" style={{ fontSize: 68, fontWeight: 750, margin: 0, letterSpacing: '-0.03em' }}>
+              <h1
+                lang="fa"
+                style={{ fontSize: 68, fontWeight: 750, margin: 0, letterSpacing: '-0.03em' }}
+              >
                 {script.title}
               </h1>
             </Reveal>
           </div>
           <Reveal start={12} y={10}>
-            <div style={{ display: 'flex', gap: 26, fontSize: 18, color: 'rgba(242,238,231,0.45)' }}>
+            <div
+              style={{ display: 'flex', gap: 26, fontSize: 18, color: 'rgba(242,238,231,0.45)' }}
+            >
               <span lang="fa">۳ تیکت فعال</span>
               <span style={{ color: 'rgba(242,238,231,0.22)' }}>|</span>
               <span lang="fa">میانگین آماده‌سازی ۱۴ دقیقه</span>
@@ -43,9 +55,13 @@ export function Kitchen() {
             const start = 22 + index * 12;
             const readyAt = 168 + index * 10;
             const isReady = frame >= readyAt;
-            const seconds = ticket.seconds + Math.round(interpolate(frame, [0, 300], [0, 46], { extrapolateRight: 'clamp' }));
+            const seconds =
+              ticket.seconds +
+              Math.round(interpolate(frame, [0, 300], [0, 46], { extrapolateRight: 'clamp' }));
             const pulse = isReady
-              ? interpolate(frame, [readyAt, readyAt + 6, readyAt + 22], [0, 1, 0.35], { extrapolateRight: 'clamp' })
+              ? interpolate(frame, [readyAt, readyAt + 6, readyAt + 22], [0, 1, 0.35], {
+                  extrapolateRight: 'clamp',
+                })
               : 0;
 
             return (
@@ -61,7 +77,13 @@ export function Kitchen() {
                     boxShadow: isReady ? `0 0 ${40 + pulse * 40}px rgba(143,185,140,0.18)` : 'none',
                   }}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
                     <span
                       style={{
                         display: 'inline-flex',
@@ -74,7 +96,13 @@ export function Kitchen() {
                       {isReady ? <TimerReset size={15} /> : <Flame size={15} />}
                       <span lang="fa">{isReady ? 'آمادهٔ تحویل' : 'در حال پخت'}</span>
                     </span>
-                    <span style={{ fontSize: 15, color: 'rgba(242,238,231,0.35)', fontVariantNumeric: 'tabular-nums' }}>
+                    <span
+                      style={{
+                        fontSize: 15,
+                        color: 'rgba(242,238,231,0.35)',
+                        fontVariantNumeric: 'tabular-nums',
+                      }}
+                    >
                       #{ticket.ref}
                     </span>
                   </div>
@@ -82,7 +110,10 @@ export function Kitchen() {
                   <div lang="fa" style={{ fontSize: 27, fontWeight: 700, marginTop: 20 }}>
                     {ticket.item}
                   </div>
-                  <div lang="fa" style={{ fontSize: 17, color: 'rgba(242,238,231,0.42)', marginTop: 6 }}>
+                  <div
+                    lang="fa"
+                    style={{ fontSize: 17, color: 'rgba(242,238,231,0.42)', marginTop: 6 }}
+                  >
                     {ticket.table} · اولویت {faNumber(index + 1)}
                   </div>
 
@@ -104,10 +135,24 @@ export function Kitchen() {
                     >
                       {faClockDuration(seconds * 1000)}
                     </span>
-                    <span style={{ width: 46, height: 2, background: isReady ? '#8fb98c' : ticket.accent, opacity: 0.6 }} />
+                    <span
+                      style={{
+                        width: 46,
+                        height: 2,
+                        background: isReady ? '#8fb98c' : ticket.accent,
+                        opacity: 0.6,
+                      }}
+                    />
                   </div>
 
-                  <div style={{ marginTop: 18, height: 4, borderRadius: 99, background: 'rgba(255,255,255,0.07)' }}>
+                  <div
+                    style={{
+                      marginTop: 18,
+                      height: 4,
+                      borderRadius: 99,
+                      background: 'rgba(255,255,255,0.07)',
+                    }}
+                  >
                     <div
                       style={{
                         height: '100%',
@@ -146,7 +191,10 @@ export function Kitchen() {
 
       <Caption
         text={script.caption}
-        opacity={interpolate(frame, [40, 60], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })}
+        opacity={interpolate(frame, [40, 60], [0, 1], {
+          extrapolateLeft: 'clamp',
+          extrapolateRight: 'clamp',
+        })}
       />
     </Stage>
   );

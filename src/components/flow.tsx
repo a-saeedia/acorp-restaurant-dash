@@ -70,7 +70,13 @@ export interface WorkflowNodeProps {
 
 export function WorkflowNode({ label, count, icon, state = 'idle' }: WorkflowNodeProps) {
   return (
-    <div className={cn('workflow__step', state === 'active' && 'workflow__step--active', state === 'done' && 'workflow__step--done')}>
+    <div
+      className={cn(
+        'workflow__step',
+        state === 'active' && 'workflow__step--active',
+        state === 'done' && 'workflow__step--done',
+      )}
+    >
       <span className="workflow__icon">{icon}</span>
       <span className="workflow__text">
         <span className="workflow__label">{label}</span>

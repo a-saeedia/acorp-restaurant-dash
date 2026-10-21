@@ -77,7 +77,9 @@ export function IngredientRow({ row, nearThreshold = false }: IngredientRowProps
       <StockLevelIndicator
         level={row.level}
         status={row.status}
-        thresholdMark={(row.ingredient.reorderThreshold / (row.ingredient.reorderThreshold * 2)) * 100}
+        thresholdMark={
+          (row.ingredient.reorderThreshold / (row.ingredient.reorderThreshold * 2)) * 100
+        }
       />
 
       <div className="ingredient__threshold">
@@ -86,7 +88,10 @@ export function IngredientRow({ row, nearThreshold = false }: IngredientRowProps
 
       <div className="row" style={{ justifyContent: 'flex-end', gap: 10 }}>
         <span className="ingredient__cost">{faMoney(row.value, { suffix: false })}</span>
-        <StatusPill tone={nearThreshold ? 'blue' : stockTone(row.status)} dot={row.status !== 'healthy'}>
+        <StatusPill
+          tone={nearThreshold ? 'blue' : stockTone(row.status)}
+          dot={row.status !== 'healthy'}
+        >
           {nearThreshold ? 'نزدیک حد' : STOCK_STATUS_FA[row.status]}
         </StatusPill>
       </div>

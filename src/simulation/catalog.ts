@@ -301,9 +301,24 @@ export const CUSTOMIZATIONS: Customization[] = [
  */
 export const EXPENSES: Expense[] = [
   { id: 'exp-rent', categoryFa: 'اجاره', labelFa: 'اجارهٔ مکان — ونک', monthlyAmount: 165_000_000 },
-  { id: 'exp-staff', categoryFa: 'نیروی انسانی', labelFa: 'حقوق و بیمهٔ ۱۴ نفر', monthlyAmount: 395_000_000 },
-  { id: 'exp-utilities', categoryFa: 'انرژی', labelFa: 'برق، آب، گاز و اینترنت', monthlyAmount: 78_000_000 },
-  { id: 'exp-misc', categoryFa: 'سایر', labelFa: 'نگهداری، نظافت و ملزومات', monthlyAmount: 47_000_000 },
+  {
+    id: 'exp-staff',
+    categoryFa: 'نیروی انسانی',
+    labelFa: 'حقوق و بیمهٔ ۱۴ نفر',
+    monthlyAmount: 395_000_000,
+  },
+  {
+    id: 'exp-utilities',
+    categoryFa: 'انرژی',
+    labelFa: 'برق، آب، گاز و اینترنت',
+    monthlyAmount: 78_000_000,
+  },
+  {
+    id: 'exp-misc',
+    categoryFa: 'سایر',
+    labelFa: 'نگهداری، نظافت و ملزومات',
+    monthlyAmount: 47_000_000,
+  },
 ];
 
 /**

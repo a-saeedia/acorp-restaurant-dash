@@ -16,7 +16,9 @@ export function SuppliersScreen() {
   const suppliers = useMemo(() => supplierSummaries(state), [state]);
   const requests = useMemo(
     () =>
-      [...openPurchaseRequests(state)].sort((a, b) => Date.parse(b.createdAtIso) - Date.parse(a.createdAtIso)),
+      [...openPurchaseRequests(state)].sort(
+        (a, b) => Date.parse(b.createdAtIso) - Date.parse(a.createdAtIso),
+      ),
     [state],
   );
 
@@ -41,7 +43,8 @@ export function SuppliersScreen() {
               <div>
                 <div className="supplier-card__name">{summary.supplier.nameFa}</div>
                 <div className="supplier-card__meta">
-                  {summary.supplier.contactFa} · تحویل {faNumber(summary.supplier.leadTimeDays)} روزه
+                  {summary.supplier.contactFa} · تحویل {faNumber(summary.supplier.leadTimeDays)}{' '}
+                  روزه
                 </div>
               </div>
               <StatusPill

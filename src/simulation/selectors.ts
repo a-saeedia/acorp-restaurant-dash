@@ -78,17 +78,13 @@ export function lowStockRows(state: SimulationState): InventoryRow[] {
 export function nearThresholdRows(state: SimulationState): InventoryRow[] {
   return inventoryRows(state)
     .filter(
-      (row) =>
-        row.status === 'healthy' &&
-        row.quantity < row.ingredient.reorderThreshold * 1.15,
+      (row) => row.status === 'healthy' && row.quantity < row.ingredient.reorderThreshold * 1.15,
     )
     .sort((a, b) => a.level - b.level);
 }
 
 export function isNearThreshold(row: InventoryRow): boolean {
-  return (
-    row.status === 'healthy' && row.quantity < row.ingredient.reorderThreshold * 1.15
-  );
+  return row.status === 'healthy' && row.quantity < row.ingredient.reorderThreshold * 1.15;
 }
 
 export function ordersByStatus(state: SimulationState, status: OrderStatus): Order[] {
@@ -186,10 +182,7 @@ export function unreadNotifications(state: SimulationState) {
 /* Analytics views                                                           */
 /* -------------------------------------------------------------------------- */
 
-export function analyticsFor(
-  state: SimulationState,
-  period: AnalyticsPeriod,
-): AnalyticsSnapshot {
+export function analyticsFor(state: SimulationState, period: AnalyticsPeriod): AnalyticsSnapshot {
   return buildAnalyticsSnapshot(
     {
       orders: state.orders,

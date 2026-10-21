@@ -214,10 +214,7 @@ function nextPurchaseRequestId(requests: readonly PurchaseRequest[]): number {
   return max + 1;
 }
 
-function openRequestExists(
-  requests: readonly PurchaseRequest[],
-  ingredientId: string,
-): boolean {
+function openRequestExists(requests: readonly PurchaseRequest[], ingredientId: string): boolean {
   return requests.some(
     (request) =>
       request.ingredientId === ingredientId &&
@@ -225,7 +222,9 @@ function openRequestExists(
   );
 }
 
-function recalculateMetrics(state: SimulationState): Pick<SimulationState, 'metrics' | 'marketing'> {
+function recalculateMetrics(
+  state: SimulationState,
+): Pick<SimulationState, 'metrics' | 'marketing'> {
   const source = {
     orders: state.orders,
     history: state.history,
@@ -627,11 +626,7 @@ export function nextPendingEvent(
 /** Today's revenue from operational orders (used by the header KPI). */
 export function todaySummary(state: SimulationState) {
   const aggregate = aggregateOrders(state.orders, DEMO_DAY_KEY);
-  const pnl = buildProfitAndLoss(
-    aggregate,
-    state.marketing.spend / 30,
-    1,
-  );
+  const pnl = buildProfitAndLoss(aggregate, state.marketing.spend / 30, 1);
   return { aggregate, pnl };
 }
 

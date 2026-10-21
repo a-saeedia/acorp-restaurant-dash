@@ -89,5 +89,10 @@ if (leftovers.length) {
 }
 
 await writeFile(outFile, html, 'utf8');
+
+// 5. Self-check: nothing may still reach for the network.
+const remote = [...html.matchAll(/(?:src|href)="(?:https?:)?\/\//g)].length;
+if (remote) throw new Error(`${remote} remote reference(s) survived inlining`);
+
 const { size } = await stat(outFile);
 console.log(`single-file dashboard -> ${outFile} (${(size / 1024).toFixed(0)} KB)`);

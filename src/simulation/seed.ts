@@ -16,11 +16,7 @@ import {
   SUPPLIERS,
   TABLE_LABELS_FA,
 } from './catalog';
-import {
-  CUSTOMIZATION_BY_ID,
-  MENU_BY_ID,
-  INGREDIENT_BY_ID,
-} from './catalog';
+import { CUSTOMIZATION_BY_ID, MENU_BY_ID, INGREDIENT_BY_ID } from './catalog';
 import {
   DEMO_DAY_KEY,
   DEMO_NOW_ISO,
@@ -101,7 +97,9 @@ function buildHistoryDay(dayKey: DayKey, index: number, total: number): DayBuild
   const demand = WEEKDAY_DEMAND[weekday] ?? 1;
 
   const seasonal =
-    1 + 0.05 * Math.sin((index / total) * Math.PI * 2) + 0.025 * Math.cos((index / total) * Math.PI * 6);
+    1 +
+    0.05 * Math.sin((index / total) * Math.PI * 2) +
+    0.025 * Math.cos((index / total) * Math.PI * 6);
   const trend = 1 + 0.12 * (index / total);
   const noise = randomFloat(rng, 0.93, 1.07);
 
@@ -140,10 +138,7 @@ function buildHistoryDay(dayKey: DayKey, index: number, total: number): DayBuild
 
     const unitPrice =
       menuItem.price +
-      customizationIds.reduce(
-        (sum, id) => sum + (CUSTOMIZATION_BY_ID.get(id)?.priceDelta ?? 0),
-        0,
-      );
+      customizationIds.reduce((sum, id) => sum + (CUSTOMIZATION_BY_ID.get(id)?.priceDelta ?? 0), 0);
     const subtotal = unitPrice * quantity;
     const discount = rng() < 0.06 ? Math.round(subtotal * 0.1) : 0;
     const total = subtotal - discount;
@@ -232,7 +227,9 @@ const IN_FLIGHT_STATUSES: OrderStatus[] = [
 
 export function generateTodayOrders(): Order[] {
   const rng = mulberry32(seedFrom('today', DEMO_DAY_KEY));
-  const serviceStartMs = Date.parse(`${DEMO_DAY_KEY}T${String(SERVICE_START_HOUR).padStart(2, '0')}:00:00+03:30`);
+  const serviceStartMs = Date.parse(
+    `${DEMO_DAY_KEY}T${String(SERVICE_START_HOUR).padStart(2, '0')}:00:00+03:30`,
+  );
   const minutes = sampleServiceMinutes(rng, TODAY_ORDER_COUNT);
   const orders: Order[] = [];
 

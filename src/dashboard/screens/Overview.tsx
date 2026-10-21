@@ -125,8 +125,8 @@ export function Overview({ onNavigate }: { onNavigate: (screen: ScreenId) => voi
               <span className="legend__swatch" style={{ background: '#e3a854' }} /> فروش خالص
             </span>
             <span className="legend__item">
-              <span className="legend__swatch" style={{ background: 'rgba(111,143,181,0.75)' }} /> تعداد
-              سفارش
+              <span className="legend__swatch" style={{ background: 'rgba(111,143,181,0.75)' }} />{' '}
+              تعداد سفارش
             </span>
           </div>
         </Panel>
@@ -135,7 +135,12 @@ export function Overview({ onNavigate }: { onNavigate: (screen: ScreenId) => voi
           <Panel title={SECTIONS_FA.livePipeline} subtitle="از ثبت تا تحویل">
             <PipelineStrip
               stages={[
-                { key: 'received', label: 'دریافت', count: counts.received, icon: <Inbox size={12} /> },
+                {
+                  key: 'received',
+                  label: 'دریافت',
+                  count: counts.received,
+                  icon: <Inbox size={12} />,
+                },
                 {
                   key: 'confirmed',
                   label: 'تأیید',
@@ -224,7 +229,11 @@ export function Overview({ onNavigate }: { onNavigate: (screen: ScreenId) => voi
           ) : (
             <div className="stack-1">
               {alerts.map((row) => (
-                <IngredientRow key={row.ingredient.id} row={row} nearThreshold={isNearThreshold(row)} />
+                <IngredientRow
+                  key={row.ingredient.id}
+                  row={row}
+                  nearThreshold={isNearThreshold(row)}
+                />
               ))}
             </div>
           )}
@@ -234,7 +243,11 @@ export function Overview({ onNavigate }: { onNavigate: (screen: ScreenId) => voi
       <div className="grid grid-2">
         <Panel
           title="رویدادهای شبیه‌سازی"
-          subtitle={recentEvents.length > 0 ? `${faNumber(recentEvents.length)} رویداد اعمال‌شده` : 'هنوز رویدادی اعمال نشده'}
+          subtitle={
+            recentEvents.length > 0
+              ? `${faNumber(recentEvents.length)} رویداد اعمال‌شده`
+              : 'هنوز رویدادی اعمال نشده'
+          }
           actions={
             <button className="btn btn--sm" onClick={advance} disabled={recentEvents.length === 0}>
               گام بعدی
@@ -258,7 +271,9 @@ export function Overview({ onNavigate }: { onNavigate: (screen: ScreenId) => voi
           {requests.length === 0 ? (
             <div className="empty">
               <div className="empty__title">پیشنهاد بازی نیست</div>
-              <div className="empty__body">پیشنهاد خرید زمانی ساخته می‌شود که موجودی زیر حد سفارش برود.</div>
+              <div className="empty__body">
+                پیشنهاد خرید زمانی ساخته می‌شود که موجودی زیر حد سفارش برود.
+              </div>
             </div>
           ) : (
             <div className="stack-cards">

@@ -76,7 +76,11 @@ export function PnlPanel({ snapshot, compact = false, className, footer }: PnlPa
         <KeyValue label="فروش خالص" value={faMoney(pnl.netSales)} total />
         <KeyValue label="بهای تمام‌شده" value={`−${faMoney(pnl.cogs)}`} tone="red" />
         <KeyValue label="سود ناخالص" value={faMoney(pnl.grossProfit)} total />
-        <KeyValue label="هزینه‌های عملیاتی" value={`−${faMoney(pnl.operatingExpenses)}`} tone="red" />
+        <KeyValue
+          label="هزینه‌های عملیاتی"
+          value={`−${faMoney(pnl.operatingExpenses)}`}
+          tone="red"
+        />
         <KeyValue label="هزینهٔ بازاریابی" value={`−${faMoney(pnl.marketingSpend)}`} tone="red" />
         <KeyValue
           label="سود عملیاتی خالص"
@@ -93,9 +97,7 @@ export function PnlPanel({ snapshot, compact = false, className, footer }: PnlPa
         </div>
         <div className="pnl__margin">
           <span className="pnl__margin-label">حاشیهٔ خالص</span>
-          <span
-            className={cn('pnl__margin-value', pnl.netMarginPct < 0 ? 't-red' : 't-green')}
-          >
+          <span className={cn('pnl__margin-value', pnl.netMarginPct < 0 ? 't-red' : 't-green')}>
             {faPercent(pnl.netMarginPct, 1)}
           </span>
         </div>
@@ -104,7 +106,8 @@ export function PnlPanel({ snapshot, compact = false, className, footer }: PnlPa
       {!compact ? (
         <div className="pnl__foot">
           <span>
-            {faNumber(snapshot.orderCount)} سفارش · میانگین سفارش {faMoneyCompact(snapshot.averageOrderValue)}
+            {faNumber(snapshot.orderCount)} سفارش · میانگین سفارش{' '}
+            {faMoneyCompact(snapshot.averageOrderValue)}
           </span>
           <span className="t-code">
             {snapshot.fromDayKey} → {snapshot.toDayKey}
@@ -126,9 +129,7 @@ export function PeriodSummary({ snapshot }: { snapshot: AnalyticsSnapshot }) {
     <div className="period-summary">
       <div>
         <span className="period-summary__label">دوره</span>
-        <span className="period-summary__value">
-          {PERIOD_LONG_FA[snapshot.period]}
-        </span>
+        <span className="period-summary__value">{PERIOD_LONG_FA[snapshot.period]}</span>
       </div>
       <div>
         <span className="period-summary__label">سفارش‌ها</span>

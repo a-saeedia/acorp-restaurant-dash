@@ -41,7 +41,10 @@ export function faDelta(value: number, decimals = 1): string {
 }
 
 /** Money in Toman with Persian digits. */
-export function faMoney(value: number, options: { suffix?: boolean; decimals?: number } = {}): string {
+export function faMoney(
+  value: number,
+  options: { suffix?: boolean; decimals?: number } = {},
+): string {
   const suffix = options.suffix ?? true;
   const rounded = options.decimals ? value : Math.round(value);
   const sign = rounded < 0 ? '−' : '';

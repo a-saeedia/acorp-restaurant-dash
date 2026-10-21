@@ -1,6 +1,13 @@
 import { expect, it } from 'vitest';
 
-import { applyEvent, applyEvents, buildOrderWorkflow, buildSampleOrder, deriveStateAt, insertOrder } from '../simulation/engine';
+import {
+  applyEvent,
+  applyEvents,
+  buildOrderWorkflow,
+  buildSampleOrder,
+  deriveStateAt,
+  insertOrder,
+} from '../simulation/engine';
 import { TODAY_ORDER_COUNT, createInitialState } from '../simulation/seed';
 import { DEMO_NOW_MS } from '../simulation/config';
 import { inventoryRows, purchaseRequestsByStatus } from '../simulation/selectors';
@@ -58,9 +65,7 @@ it('is idempotent: replaying an event never deducts stock twice', () => {
 
   expect(stockOf(afterSecond, 'ing-beef')).toBe(stockOf(afterFirst, 'ing-beef'));
   expect(stockOf(afterSecond, 'ing-cheese')).toBe(stockOf(afterFirst, 'ing-cheese'));
-  expect(afterSecond.inventoryTransactions.length).toBe(
-    afterFirst.inventoryTransactions.length,
-  );
+  expect(afterSecond.inventoryTransactions.length).toBe(afterFirst.inventoryTransactions.length);
   expect(afterSecond.appliedEventCount).toBe(afterFirst.appliedEventCount);
 });
 
@@ -160,9 +165,15 @@ it('moves a purchase request recommendation â†’ prepared â†’ approved'
     refs: { requestId: target.id },
   };
   state = applyEvent(state, prepared);
-  expect(state.purchaseRequests.find((request) => request.id === target.id)?.status).toBe('prepared');
+  expect(state.purchaseRequests.find((request) => request.id === target.id)?.status).toBe(
+    'prepared',
+  );
 
-  const approved: SimulationEvent = { ...prepared, id: `${target.id}:APPROVED`, type: 'PURCHASE_REQUEST_APPROVED' };
+  const approved: SimulationEvent = {
+    ...prepared,
+    id: `${target.id}:APPROVED`,
+    type: 'PURCHASE_REQUEST_APPROVED',
+  };
   state = applyEvent(state, approved);
   const approvedRequest = state.purchaseRequests.find((request) => request.id === target.id);
   expect(approvedRequest?.status).toBe('approved');

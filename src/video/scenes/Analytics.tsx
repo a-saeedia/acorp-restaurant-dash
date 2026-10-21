@@ -1,7 +1,7 @@
 import { interpolate, useCurrentFrame } from 'remotion';
 import { CountUp, Reveal, useRamp } from '../components/motion';
 import { Caption, Frame, Kicker, Stage } from '../components/stage';
-import { faMoney, faMoneyCompact, faNumber, faPercent } from '../../lib/fa';
+import { faDayKeyShort, faMoney, faMoneyCompact, faNumber, faPercent } from '../../lib/fa';
 import { analyticsFor } from '../../simulation/selectors';
 import { SCRIPT } from '../script';
 import { FILM } from '../data';
@@ -18,7 +18,9 @@ function buildGeometry(values: number[]) {
     y: H - (value / max) * H,
     value,
   }));
-  const line = points.map((point, index) => `${index === 0 ? 'M' : 'L'}${point.x.toFixed(2)},${point.y.toFixed(2)}`).join(' ');
+  const line = points
+    .map((point, index) => `${index === 0 ? 'M' : 'L'}${point.x.toFixed(2)},${point.y.toFixed(2)}`)
+    .join(' ');
   // The axis runs right→left, so the area closes from the last point back along
   // the baseline instead of assuming x=0 is the start.
   const firstX = points[0]?.x ?? W;
@@ -40,7 +42,10 @@ export function Analytics() {
   const snapshot = analyticsFor(FILM.base, 'month');
   const { pnl, daily } = snapshot;
 
-  const values = daily.map((day) => day.netSales);
+  // The demo day is still in service, so its totals are partial. Charting it
+  // would draw a fake collapse at the end of the trend — plot completed days.
+  const trend = daily.slice(0, -1);
+  const values = trend.map((day) => day.netSales);
   const geometry = buildGeometry(values.length > 0 ? values : [1]);
   const draw = useRamp(26, 78);
   const areaOpacity = interpolate(frame, [60, 120], [0, 0.5], {
@@ -60,13 +65,23 @@ export function Analytics() {
   return (
     <Stage bloom="center">
       <Frame align="top">
-        <div style={{ marginTop: 6, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <div
+          style={{
+            marginTop: 6,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
+          }}
+        >
           <div>
             <Reveal start={0}>
               <Kicker>{script.kicker}</Kicker>
             </Reveal>
             <Reveal start={4} y={20}>
-              <h1 lang="fa" style={{ fontSize: 66, fontWeight: 750, margin: 0, letterSpacing: '-0.03em' }}>
+              <h1
+                lang="fa"
+                style={{ fontSize: 66, fontWeight: 750, margin: 0, letterSpacing: '-0.03em' }}
+              >
                 {script.title}
               </h1>
             </Reveal>
@@ -79,7 +94,12 @@ export function Analytics() {
                 start={30}
                 duration={70}
                 format={(value) => faPercent(Math.round(value * 10) / 10)}
-                style={{ fontSize: 52, fontWeight: 750, color: '#f0c98c', fontVariantNumeric: 'tabular-nums' }}
+                style={{
+                  fontSize: 52,
+                  fontWeight: 750,
+                  color: '#f0c98c',
+                  fontVariantNumeric: 'tabular-nums',
+                }}
               />
             </div>
           </Reveal>
@@ -98,7 +118,7 @@ export function Analytics() {
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 18 }}>
                 <span lang="fa" style={{ fontSize: 18, color: 'rgba(242,238,231,0.55)' }}>
-                  فروش خالص · ۳۰ روز
+                  فروش خالص · {faNumber(trend.length)} روز کامل
                 </span>
                 <span style={{ fontSize: 18, color: '#f0c98c', fontWeight: 650 }}>
                   {faMoneyCompact(pnl.netSales)}
@@ -137,7 +157,7 @@ export function Analytics() {
                   strokeDashoffset={geometry.length * (1 - draw)}
                 />
 
-                {daily.map((day, index) => {
+                {trend.map((day, index) => {
                   const point = geometry.line.split(' ')[index];
                   if (!point) return null;
                   const [x, y] = point.slice(1).split(',').map(Number) as [number, number];
@@ -148,7 +168,18 @@ export function Analytics() {
                     { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' },
                   );
                   if (index % 5 !== 0) return null;
-                  return <circle key={day.dayKey} cx={x} cy={y} r={3.5} fill="#12100d" stroke="#e3a854" strokeWidth={2} opacity={pointOpacity} />;
+                  return (
+                    <circle
+                      key={day.dayKey}
+                      cx={x}
+                      cy={y}
+                      r={3.5}
+                      fill="#12100d"
+                      stroke="#e3a854"
+                      strokeWidth={2}
+                      opacity={pointOpacity}
+                    />
+                  );
                 })}
               </svg>
 
@@ -161,9 +192,9 @@ export function Analytics() {
                   color: 'rgba(242,238,231,0.30)',
                 }}
               >
-                {['۱ مهر', '۷ مهر', '۱۴ مهر', '۲۱ مهر', '۲۹ مهر'].map((label) => (
-                  <span key={label} lang="fa">
-                    {label}
+                {trend.filter((_, index) => index % 7 === 0 || index === trend.length - 1).map((day) => (
+                  <span key={day.dayKey} lang="fa">
+                    {faDayKeyShort(day.dayKey)}
                   </span>
                 ))}
               </div>
@@ -185,7 +216,14 @@ export function Analytics() {
                   <span lang="fa" style={{ fontSize: 19, color: 'rgba(242,238,231,0.55)' }}>
                     {row.label}
                   </span>
-                  <span style={{ fontSize: 21, fontWeight: 600, color: row.tone, fontVariantNumeric: 'tabular-nums' }}>
+                  <span
+                    style={{
+                      fontSize: 21,
+                      fontWeight: 600,
+                      color: row.tone,
+                      fontVariantNumeric: 'tabular-nums',
+                    }}
+                  >
                     {faMoney(row.value)}
                   </span>
                 </div>
@@ -207,7 +245,9 @@ export function Analytics() {
                 }}
               >
                 <span style={{ fontSize: 16, color: 'rgba(242,238,231,0.55)' }}>سفارش‌های ماه</span>
-                <span style={{ fontSize: 24, fontWeight: 700 }}>{faNumber(snapshot.orderCount)}</span>
+                <span style={{ fontSize: 24, fontWeight: 700 }}>
+                  {faNumber(snapshot.orderCount)}
+                </span>
               </div>
             </Reveal>
           </div>
@@ -216,7 +256,10 @@ export function Analytics() {
 
       <Caption
         text={script.caption}
-        opacity={interpolate(frame, [90, 110], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })}
+        opacity={interpolate(frame, [90, 110], [0, 1], {
+          extrapolateLeft: 'clamp',
+          extrapolateRight: 'clamp',
+        })}
       />
     </Stage>
   );

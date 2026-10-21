@@ -4,7 +4,13 @@
  * Everything is computed from the real simulation at module scope, so the
  * numbers on screen are the numbers the dashboard would show — no mock copy.
  */
-import { buildOrderWorkflow, buildSampleOrder, createInitialState, deriveStateAt, insertOrder } from '../simulation';
+import {
+  buildOrderWorkflow,
+  buildSampleOrder,
+  createInitialState,
+  deriveStateAt,
+  insertOrder,
+} from '../simulation';
 import { DEMO_NOW_MS } from '../simulation/config';
 
 const base = createInitialState();

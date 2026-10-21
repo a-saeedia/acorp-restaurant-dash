@@ -171,7 +171,12 @@ export interface StatusPillProps {
   className?: string;
 }
 
-export function StatusPill({ children, tone = 'neutral', dot = false, className }: StatusPillProps) {
+export function StatusPill({
+  children,
+  tone = 'neutral',
+  dot = false,
+  className,
+}: StatusPillProps) {
   return (
     <span className={cn('pill', `pill--${tone}`, className)}>
       {dot ? <span className="pill__dot" /> : null}

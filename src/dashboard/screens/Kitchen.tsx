@@ -12,7 +12,9 @@ export function KitchenScreen() {
   const board = useMemo(() => activeOrders(state), [state]);
   const columns = useMemo(
     () => ({
-      incoming: board.filter((order) => order.status === 'received' || order.status === 'confirmed'),
+      incoming: board.filter(
+        (order) => order.status === 'received' || order.status === 'confirmed',
+      ),
       cooking: board.filter((order) => order.status === 'preparing'),
       ready: board.filter((order) => order.status === 'ready'),
     }),

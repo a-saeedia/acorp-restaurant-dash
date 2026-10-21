@@ -28,7 +28,12 @@ export interface NotificationToastProps {
   className?: string;
 }
 
-export function NotificationToast({ notification, nowIso, fresh = false, className }: NotificationToastProps) {
+export function NotificationToast({
+  notification,
+  nowIso,
+  fresh = false,
+  className,
+}: NotificationToastProps) {
   const tone = TONE[notification.kind];
   const Icon = ICON[notification.kind] ?? Bell;
 
@@ -41,7 +46,9 @@ export function NotificationToast({ notification, nowIso, fresh = false, classNa
           {notification.bodyFa}
         </PersianText>
       </div>
-      <span className="toast__time">{faElapsed(Date.parse(nowIso) - Date.parse(notification.atIso))}</span>
+      <span className="toast__time">
+        {faElapsed(Date.parse(nowIso) - Date.parse(notification.atIso))}
+      </span>
     </div>
   );
 }

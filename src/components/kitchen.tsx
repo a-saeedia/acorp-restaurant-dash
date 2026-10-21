@@ -70,7 +70,11 @@ export function KitchenTicket({
 
       <footer className="ticket__foot">
         <StatusPill tone={order.status === 'ready' ? 'green' : 'amber'} dot>
-          {order.status === 'ready' ? 'آماده تحویل' : order.status === 'preparing' ? 'در حال پخت' : 'در انتظار'}
+          {order.status === 'ready'
+            ? 'آماده تحویل'
+            : order.status === 'preparing'
+              ? 'در حال پخت'
+              : 'در انتظار'}
         </StatusPill>
         {actionLabel ? (
           <button className="btn btn--sm btn--ghost" onClick={onAction} disabled={actionDisabled}>

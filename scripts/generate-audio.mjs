@@ -55,15 +55,15 @@ for (let scene = 0; scene < CHORDS.length; scene += 1) {
     const t = i / SR;
     const local = t - start;
     const remaining = end - t;
-    const envelope =
-      smooth(clamp01(local / fade)) * smooth(clamp01(remaining / fade + 0.15));
+    const envelope = smooth(clamp01(local / fade)) * smooth(clamp01(remaining / fade + 0.15));
 
     let value = 0;
     for (let v = 0; v < chord.length; v += 1) {
       const freq = chord[v];
       const detune = 1 + (v % 2 === 0 ? 0.0015 : -0.0015);
       value +=
-        Math.sin(2 * Math.PI * freq * detune * t) * (0.055 / (v + 1)) *
+        Math.sin(2 * Math.PI * freq * detune * t) *
+        (0.055 / (v + 1)) *
         (0.65 + 0.35 * lfo(t, 0.06 + v * 0.017, v));
     }
 

@@ -71,7 +71,13 @@ export function ColdOpen() {
           </div>
         </Frame>
 
-        <Caption text={script.caption} opacity={interpolate(frame, [96, 112], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })} />
+        <Caption
+          text={script.caption}
+          opacity={interpolate(frame, [96, 112], [0, 1], {
+            extrapolateLeft: 'clamp',
+            extrapolateRight: 'clamp',
+          })}
+        />
       </AbsoluteFill>
     </Stage>
   );

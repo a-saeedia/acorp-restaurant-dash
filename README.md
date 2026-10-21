@@ -7,6 +7,9 @@ so the dashboard, the tests and the film can never disagree.
 
 > **Brand:** ACorp (Latin wordmark) · **UI language:** Persian · **Currency:** Toman
 
+**Live dashboard:** <https://acorp-restaurant-dash.darkestjokepossible.workers.dev/>
+**Commercial (MP4, 88s):** [download](https://github.com/a-saeedia/acorp-restaurant-dash/releases/download/v1.0.0/acorp-commercial.mp4)
+
 ---
 
 ## What is in here

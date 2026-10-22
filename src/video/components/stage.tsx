@@ -1,84 +1,94 @@
 import type { CSSProperties, ReactNode } from 'react';
-import { AbsoluteFill, Easing, interpolate, useCurrentFrame, useVideoConfig } from 'remotion';
-import { Aurora, Grain, GridFloor, Particles, Scanlines, Vignette } from './kit';
-import { T, rgba } from '../theme';
-import { sceneFrames } from '../timeline';
+import { AbsoluteFill } from 'remotion';
 
 /**
- * Shared stage. Every scene sits on the same violet void so nine different
- * layouts still read as one film: aurora, perspective grid, dust, grain,
- * scanlines, vignette — then content on top.
+ * Shared stage treatment for every scene: graphite void, a faint technical
+ * grid, two warm light blooms and a vignette. Keeping it in one component is
+ * what makes nine scenes feel like one film.
  */
 export function Stage({
   children,
-  tone = 'violet',
-  grid = true,
-  dust = true,
-  intensity = 1,
-  gridOpacity = 0.34,
+  bloom = 'right',
+  dim = 1,
 }: {
   children: ReactNode;
-  tone?: 'violet' | 'gold' | 'mixed';
-  grid?: boolean;
-  dust?: boolean;
-  intensity?: number;
-  gridOpacity?: number;
+  bloom?: 'right' | 'left' | 'center';
+  dim?: number;
 }) {
+  const bloomPosition: CSSProperties =
+    bloom === 'left'
+      ? { left: '-18%', top: '-10%' }
+      : bloom === 'center'
+        ? { left: '30%', top: '-24%' }
+        : { right: '-14%', top: '-16%' };
+
   return (
-    <AbsoluteFill style={{ backgroundColor: T.void, overflow: 'hidden' }}>
-      <Aurora tone={tone} intensity={intensity} />
-      {grid ? (
-        <GridFloor
-          opacity={gridOpacity * intensity}
-          color={tone === 'gold' ? rgba(T.gold, 0.2) : rgba(T.lilac, 0.24)}
-          speed={0.9}
-          horizon={tone === 'gold' ? 62 : 58}
-        />
-      ) : null}
-      {dust ? (
-        <Particles
-          count={54}
-          seed={tone === 'gold' ? 31 : 17}
-          color={tone === 'gold' ? T.gold : T.lilac}
-          opacity={0.5 * intensity}
-          size={2.4}
-          rise={0.44}
-        />
-      ) : null}
+    <AbsoluteFill style={{ backgroundColor: '#08090b', overflow: 'hidden' }}>
       <AbsoluteFill
         style={{
-          background: `radial-gradient(ellipse at 50% 44%, ${rgba(T.plum, 0.28)} 0%, transparent 58%)`,
+          backgroundImage:
+            'linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px)',
+          backgroundSize: '80px 80px',
+          maskImage: 'radial-gradient(circle at 50% 45%, black 10%, transparent 78%)',
+          opacity: 0.7 * dim,
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          width: 1100,
+          height: 1100,
+          borderRadius: '50%',
+          filter: 'blur(140px)',
+          opacity: 0.5 * dim,
+          background:
+            'radial-gradient(circle, rgba(227,168,84,0.30) 0%, rgba(227,168,84,0.06) 45%, transparent 70%)',
+          ...bloomPosition,
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          left: '-12%',
+          bottom: '-28%',
+          width: 900,
+          height: 900,
+          borderRadius: '50%',
+          filter: 'blur(160px)',
+          opacity: 0.32 * dim,
+          background:
+            'radial-gradient(circle, rgba(217,107,51,0.24) 0%, rgba(217,107,51,0.04) 50%, transparent 72%)',
+        }}
+      />
+      <AbsoluteFill
+        style={{
+          background: 'radial-gradient(ellipse at 50% 50%, transparent 42%, rgba(0,0,0,0.62) 100%)',
         }}
       />
       {children}
-      <Scanlines opacity={0.055} />
-      <Grain opacity={0.13} />
-      <Vignette strength={0.82} />
     </AbsoluteFill>
   );
 }
 
-/** Safe area: 92px gutters, RTL, Vazirmatn. */
+/** Safe-area wrapper: 96px gutters, content vertically centred. */
 export function Frame({
   children,
   align = 'center',
-  style,
 }: {
   children: ReactNode;
   align?: 'center' | 'top';
-  style?: CSSProperties;
 }) {
   return (
     <AbsoluteFill
       style={{
-        padding: '86px 92px 108px',
+        padding: '88px 96px 104px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: align === 'center' ? 'center' : 'flex-start',
-        color: T.cream,
+        gap: 0,
+        color: '#f2eee7',
         direction: 'rtl',
         fontFamily: 'Vazirmatn, system-ui, sans-serif',
-        ...style,
       }}
     >
       {children}
@@ -86,66 +96,14 @@ export function Frame({
   );
 }
 
-/**
- * Per-scene in/out. `useVideoConfig().durationInFrames` reports the *film*
- * length inside a Sequence, so the scene length comes from the timeline table.
- */
-export function SceneShell({
-  id,
-  children,
-  enter = 14,
-  exit = 10,
-  zoom = 0.045,
-  blur = 16,
-}: {
-  id: string;
-  children: ReactNode;
-  enter?: number;
-  exit?: number;
-  zoom?: number;
-  blur?: number;
-}) {
-  const frame = useCurrentFrame();
-  const total = sceneFrames(id);
-
-  const inProgress = interpolate(frame, [0, enter], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-    easing: Easing.out(Easing.cubic),
-  });
-  const outProgress = interpolate(frame, [total - exit, total], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-    easing: Easing.in(Easing.cubic),
-  });
-
-  return (
-    <AbsoluteFill
-      style={{
-        opacity: inProgress * (1 - outProgress * 0.9),
-        transform: `scale(${1 + (1 - inProgress) * zoom + outProgress * zoom * 0.6}) translateY(${(1 - inProgress) * 22}px)`,
-        filter: `blur(${(1 - inProgress) * blur + outProgress * blur * 0.7}px)`,
-      }}
-    >
-      {children}
-    </AbsoluteFill>
-  );
-}
-
-/** Bottom-third narration line with a drawing gold rule. */
+/** Bottom-third caption used as the film's narration line. */
 export function Caption({ text, opacity = 1 }: { text: string; opacity?: number }) {
-  const frame = useCurrentFrame();
-  const settle = interpolate(frame, [0, 40], [0.02, 0], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-
   return (
     <div
       style={{
         position: 'absolute',
-        insetInline: 92,
-        bottom: 62,
+        insetInline: 96,
+        bottom: 64,
         display: 'flex',
         alignItems: 'center',
         gap: 18,
@@ -154,21 +112,19 @@ export function Caption({ text, opacity = 1 }: { text: string; opacity?: number 
     >
       <span
         style={{
-          width: 54,
-          height: 1.5,
+          width: 42,
+          height: 2,
+          background: 'linear-gradient(90deg, #e3a854, rgba(227,168,84,0))',
           flex: 'none',
-          background: `linear-gradient(90deg, ${T.gold}, ${rgba(T.gold, 0)})`,
-          boxShadow: `0 0 14px ${rgba(T.gold, 0.6)}`,
         }}
       />
       <span
         lang="fa"
         style={{
-          fontSize: 25,
-          lineHeight: 1.6,
-          color: 'rgba(247,242,232,0.72)',
-          letterSpacing: `${settle}em`,
-          textShadow: '0 8px 30px rgba(0,0,0,0.8)',
+          fontSize: 27,
+          lineHeight: 1.55,
+          color: 'rgba(242,238,231,0.78)',
+          letterSpacing: '-0.01em',
         }}
       >
         {text}
@@ -177,53 +133,23 @@ export function Caption({ text, opacity = 1 }: { text: string; opacity?: number 
   );
 }
 
-/** Top-left running slug, like a broadcast lower-third. */
-export function Slug({ label, index }: { label: string; index: string }) {
-  const frame = useCurrentFrame();
-  const { durationInFrames } = useVideoConfig();
-  const progress = interpolate(frame, [0, durationInFrames], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-
+/** Small monospace-ish eyebrow above a headline. */
+export function Kicker({ children, color = '#e3a854' }: { children: ReactNode; color?: string }) {
   return (
     <div
       style={{
-        position: 'absolute',
-        top: 54,
-        left: 92,
-        display: 'flex',
+        display: 'inline-flex',
         alignItems: 'center',
-        gap: 12,
-        fontSize: 14,
-        letterSpacing: '0.18em',
-        color: rgba(T.cream, 0.34),
-        fontVariantNumeric: 'tabular-nums',
-        direction: 'ltr',
+        gap: 10,
+        fontSize: 19,
+        letterSpacing: '0.16em',
+        color,
+        textTransform: 'uppercase',
+        marginBottom: 18,
       }}
     >
-      <span style={{ color: rgba(T.gold, 0.8) }}>{index}</span>
-      <span>{label.toUpperCase()}</span>
-      <span
-        style={{
-          width: 90,
-          height: 1,
-          background: `linear-gradient(90deg, ${rgba(T.cream, 0.35)}, transparent)`,
-          position: 'relative',
-        }}
-      >
-        <span
-          style={{
-            position: 'absolute',
-            top: -1,
-            left: `${progress * 100}%`,
-            width: 22,
-            height: 3,
-            background: T.gold,
-            boxShadow: `0 0 12px ${T.gold}`,
-          }}
-        />
-      </span>
+      <span style={{ width: 7, height: 7, borderRadius: 2, background: color }} />
+      {children}
     </div>
   );
 }

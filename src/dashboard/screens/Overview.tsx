@@ -21,7 +21,7 @@ import {
   StatusPill,
   SupplierRequestCard,
 } from '../../components';
-import { faMoney, faMoneyCompact, faNumber, faPercent } from '../../lib/fa';
+import { faMoney, faMoneyCompact, faNumber, faPercent, faTime } from '../../lib/fa';
 import { SECTIONS_FA } from '../../lib/labels';
 import {
   activeOrders,
@@ -295,8 +295,8 @@ export function Overview({ onNavigate }: { onNavigate: (screen: ScreenId) => voi
           items={(today.channelSplit ?? []).map((channel) => ({
             key: channel.channel,
             labelFa: channel.channel === 'qr' ? 'QR سر میز' : 'ارسال با پیک',
-            value: Math.round(today.pnl.netSales * channel.share),
-            metaFa: `${faNumber(channel.orders)} سفارش · ${faPercent(channel.share * 100, 1)}`,
+            value: Math.round((today.pnl.netSales * channel.share) / 100),
+            metaFa: `${faNumber(channel.orders)} سفارش · ${faPercent(channel.share, 1)}`,
           }))}
           formatValue={faMoneyCompact}
         />
@@ -308,7 +308,7 @@ export function Overview({ onNavigate }: { onNavigate: (screen: ScreenId) => voi
       </Panel>
 
       <div className="legend" style={{ justifyContent: 'flex-end' }}>
-        <span>ساعت شبیه‌سازی: {clockIso.slice(11, 16)}</span>
+        <span>ساعت شبیه‌سازی: {faTime(clockIso)}</span>
       </div>
     </div>
   );

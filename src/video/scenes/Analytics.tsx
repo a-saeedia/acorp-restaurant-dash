@@ -192,11 +192,13 @@ export function Analytics() {
                   color: 'rgba(242,238,231,0.30)',
                 }}
               >
-                {trend.filter((_, index) => index % 7 === 0 || index === trend.length - 1).map((day) => (
-                  <span key={day.dayKey} lang="fa">
-                    {faDayKeyShort(day.dayKey)}
-                  </span>
-                ))}
+                {trend
+                  .filter((_, index) => index % 7 === 0 || index === trend.length - 1)
+                  .map((day) => (
+                    <span key={day.dayKey} lang="fa">
+                      {faDayKeyShort(day.dayKey)}
+                    </span>
+                  ))}
               </div>
             </div>
           </Reveal>

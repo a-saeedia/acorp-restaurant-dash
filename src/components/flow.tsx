@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { cn } from '../lib/cn';
+import { faNumber } from '../lib/fa';
 
 /* -------------------------------------------------------------------------- */
 /* DataFlowConnector                                                        */
@@ -80,7 +81,7 @@ export function WorkflowNode({ label, count, icon, state = 'idle' }: WorkflowNod
       <span className="workflow__icon">{icon}</span>
       <span className="workflow__text">
         <span className="workflow__label">{label}</span>
-        <span className="workflow__count">{count}</span>
+        <span className="workflow__count">{faNumber(count)}</span>
       </span>
     </div>
   );

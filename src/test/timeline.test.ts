@@ -58,4 +58,3 @@ describe('film timeline', () => {
     expect(readme).not.toContain('2,640 frames');
   });
 });
-

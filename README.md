@@ -121,17 +121,17 @@ typography because there is no Persian TTS on the build machine â€” no fake
 voice-over, no borrowed audio. The soundtrack in `public/audio/bed.wav` is
 synthesised from sine waves and filtered noise by `scripts/generate-audio.mjs`.
 
-| #   | Scene                           | Length |
-| --- | ------------------------------- | ------ |
+| #   | Scene                             | Length |
+| --- | --------------------------------- | ------ |
 | 1   | Cold open â€” wordmark            | 6s     |
 | 2   | The problem â€” three leaks       | 8s     |
-| 3   | Order flow â€” 11 events          | 14s    |
-| 4   | Kitchen â€” same instant          | 10s    |
-| 5   | Inventory â€” before it runs out  | 12s    |
-| 6   | Analytics â€” profit, not revenue | 13s    |
+| 3   | Order flow â€” 11 events          | 10s    |
+| 4   | Kitchen â€” same instant          | 8s     |
+| 5   | Inventory â€” before it runs out  | 8s     |
+| 6   | Analytics â€” profit, not revenue | 10s    |
 | 7   | Marketing â€” attribution         | 8s     |
-| 8   | Product â€” one screen            | 10s    |
-| 9   | Outro                           | 7s     |
+| 8   | Product â€” one screen            | 8s     |
+| 9   | Outro                             | 4s     |
 
 Total: **2,100 frames / 70 seconds**.
 
@@ -155,4 +155,3 @@ docs/           architecture notes
 
 - [`docs/architecture.md`](docs/architecture.md) â€” event model, P&L math, opex
   proration, campaign attribution, stock thresholds, how to add a screen or a scene.
-

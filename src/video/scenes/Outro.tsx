@@ -1,99 +1,86 @@
-import { AbsoluteFill, interpolate, useCurrentFrame } from 'remotion';
-import { Hairline, Reveal } from '../components/motion';
-import { Frame, Stage } from '../components/stage';
+﻿import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from 'remotion';
+import { Act, Chip, CrystalText, Kinetic, Particles, Slam } from '../components/kit';
 import { SCRIPT } from '../script';
-import { sceneFrames } from '../timeline';
-
-const PILLS = ['متن‌باز · MIT', 'Remotion', 'فارسی · RTL', 'شبیه‌سازی قطعی'];
+import { C, FONT, GRAD, ramp } from '../theme';
 
 export function Outro() {
   const frame = useCurrentFrame();
-  const total = sceneFrames('Outro');
-  const script = SCRIPT.Outro;
-  const fadeOut = interpolate(frame, [total - 30, total], [1, 0], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  const drift = interpolate(frame, [0, 120], [1.06, 1.0]);
+  const seam = ramp(frame, 18, 26, Easing.out(Easing.exp));
 
   return (
-    <Stage bloom="center">
-      <AbsoluteFill style={{ opacity: fadeOut }}>
-        <Frame>
+    <Act seed={124} shards={8} impactAt={6} impactAmp={10} flashAt={6} flashFrames={2}>
+      <AbsoluteFill style={{ transform: `scale(${drift})` }}>
+        <div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '44%',
+            transform: 'translate(-50%, -50%)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Slam start={2} from={2.2} duration={14} blur={18}>
+            <CrystalText size={148} weight={900} style={{ letterSpacing: '-0.055em' }}>
+              {SCRIPT.brand}
+            </CrystalText>
+          </Slam>
+
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              textAlign: 'center',
+              width: 300,
+              height: 2,
+              marginTop: 4,
+              background: GRAD.gold,
+              transform: `scaleX(${seam})`,
+              boxShadow: `0 0 24px ${C.gold}`,
+            }}
+          />
+
+          <div style={{ direction: 'rtl', marginTop: 30 }}>
+            <Kinetic
+              text={SCRIPT.outro.line}
+              start={16}
+              per={3}
+              size={38}
+              weight={600}
+              align="center"
+            />
+          </div>
+
+          <div style={{ marginTop: 24, display: 'flex', gap: 10, opacity: ramp(frame, 40, 18) }}>
+            <Chip tone="gold">{SCRIPT.outro.url}</Chip>
+            <Chip tone="crystal">{SCRIPT.tagline}</Chip>
+          </div>
+
+          <div
+            style={{
+              marginTop: 30,
+              fontFamily: FONT,
+              fontSize: 14,
+              letterSpacing: '0.16em',
+              color: C.dim,
+              opacity: ramp(frame, 56, 20),
             }}
           >
-            <Reveal start={0} y={0}>
-              <div
-                style={{
-                  fontSize: 128,
-                  fontWeight: 800,
-                  letterSpacing: '-0.055em',
-                  lineHeight: 1,
-                  marginBottom: 22,
-                }}
-              >
-                ACorp
-              </div>
-            </Reveal>
-
-            <Hairline start={14} duration={26} width={360} />
-
-            <Reveal start={24} y={14}>
-              <div lang="fa" style={{ fontSize: 36, fontWeight: 600, marginTop: 26 }}>
-                {script.title}
-              </div>
-            </Reveal>
-
-            <Reveal start={38} y={12}>
-              <div
-                lang="fa"
-                style={{ fontSize: 20, color: 'rgba(242,238,231,0.45)', marginTop: 12 }}
-              >
-                {script.caption}
-              </div>
-            </Reveal>
-
-            <div style={{ display: 'flex', gap: 10, marginTop: 40 }}>
-              {PILLS.map((pill, index) => (
-                <Reveal key={pill} start={56 + index * 8} y={10}>
-                  <span
-                    lang="fa"
-                    style={{
-                      display: 'inline-block',
-                      padding: '9px 18px',
-                      borderRadius: 999,
-                      border: '1px solid rgba(255,255,255,0.12)',
-                      color: 'rgba(242,238,231,0.6)',
-                      fontSize: 15,
-                    }}
-                  >
-                    {pill}
-                  </span>
-                </Reveal>
-              ))}
-            </div>
-
-            <Reveal start={96} y={10}>
-              <div
-                style={{
-                  marginTop: 40,
-                  fontSize: 15,
-                  letterSpacing: '0.08em',
-                  color: 'rgba(242,238,231,0.32)',
-                  direction: 'ltr',
-                }}
-              >
-                github.com/a-saeedia · 2026
-              </div>
-            </Reveal>
+            {SCRIPT.outro.meta}
           </div>
-        </Frame>
+        </div>
       </AbsoluteFill>
-    </Stage>
+      <Particles at={6} count={30} x={50} y={42} spread={1.4} />
+      <div
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: 3,
+          background: GRAD.gold,
+          opacity: 0.5,
+        }}
+      />
+    </Act>
   );
 }

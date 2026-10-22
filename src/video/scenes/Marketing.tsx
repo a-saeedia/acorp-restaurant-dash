@@ -1,178 +1,151 @@
-import { interpolate, useCurrentFrame } from 'remotion';
-import { CountUp, Reveal } from '../components/motion';
-import { Caption, Frame, Kicker, Stage } from '../components/stage';
-import { faMoneyCompact, faNumber, faPercent } from '../../lib/fa';
-import { marketingFor } from '../../simulation/selectors';
-import { SCRIPT } from '../script';
+import { AbsoluteFill, Easing, useCurrentFrame } from 'remotion';
+import {
+  Act,
+  Beam,
+  Chip,
+  Counter,
+  CrystalText,
+  GoldText,
+  Meter,
+  Panel,
+  Slam,
+  Wipe,
+} from '../components/kit';
 import { FILM } from '../data';
+import { faMoneyCompact, faNumber, faPercent } from '../../lib/fa';
+import { SCRIPT } from '../script';
+import { C, FONT, clamp, ramp } from '../theme';
 
 export function Marketing() {
   const frame = useCurrentFrame();
-  const script = SCRIPT.Marketing;
-  const snapshot = marketingFor(FILM.base, 'month');
-  const maxRevenue = Math.max(...snapshot.channels.map((channel) => channel.revenue), 1);
+  const { marketing } = FILM;
+  const pulse = 1 + Math.sin(frame / 18) * 0.02;
 
   return (
-    <Stage bloom="left">
-      <Frame align="top">
-        <div style={{ marginTop: 24 }}>
-          <Reveal start={0}>
-            <Kicker>{script.kicker}</Kicker>
-          </Reveal>
-          <Reveal start={4} y={20}>
-            <h1
-              lang="fa"
-              style={{ fontSize: 66, fontWeight: 750, margin: 0, letterSpacing: '-0.03em' }}
-            >
-              {script.title}
-            </h1>
-          </Reveal>
-        </div>
+    <Act seed={96} shards={7} caption={SCRIPT.marketing.caption} captionStart={12}>
+      <AbsoluteFill>
+        <Beam at={34} x={40} angle={-14} color="rgba(232,180,92,0.20)" />
 
-        <div style={{ display: 'flex', gap: 56, marginTop: 52, alignItems: 'flex-start' }}>
-          <Reveal start={18} y={28} style={{ flex: '0 0 470px' }}>
+        {/* Concentric response rings */}
+        <div
+          style={{
+            position: 'absolute',
+            left: 250,
+            top: '50%',
+            transform: `translate(-50%, -50%) scale(${pulse})`,
+            opacity: 0.9,
+          }}
+        >
+          {[0, 1, 2].map((index) => (
             <div
-              style={{
-                border: '1px solid rgba(255,255,255,0.09)',
-                background:
-                  'linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.012))',
-                borderRadius: 24,
-                padding: '34px 32px 30px',
-              }}
+              key={index}
+              style={{ position: 'absolute', left: 0, top: 0, transform: 'translate(-50%, -50%)' }}
             >
-              <div lang="fa" style={{ fontSize: 18, color: 'rgba(242,238,231,0.45)' }}>
-                بازگشت سرمایهٔ کمپین‌ها
-              </div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginTop: 10 }}>
-                <CountUp
-                  to={snapshot.attributionRoi}
-                  start={28}
-                  duration={60}
-                  format={(value) => faNumber(Math.round(value * 10) / 10)}
-                  style={{
-                    fontSize: 128,
-                    fontWeight: 800,
-                    lineHeight: 1,
-                    letterSpacing: '-0.04em',
-                    color: '#f0c98c',
-                  }}
-                />
-                <span style={{ fontSize: 52, color: 'rgba(240,201,140,0.55)', fontWeight: 300 }}>
-                  ×
-                </span>
-              </div>
-
               <div
-                style={{ height: 1, background: 'rgba(255,255,255,0.09)', margin: '26px 0 22px' }}
-              />
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                {[
-                  { label: 'هزینهٔ کمپین', value: faMoneyCompact(snapshot.spend) },
-                  {
-                    label: 'درآمد نسبت‌داده‌شده',
-                    value: faMoneyCompact(snapshot.revenueAttributed),
-                  },
-                  { label: 'تبدیل', value: `${faNumber(snapshot.conversions)} سفارش` },
-                  {
-                    label: 'مشتری تکراری',
-                    value: faPercent(Math.round(snapshot.repeatCustomerRate * 1000) / 10),
-                  },
-                ].map((row) => (
-                  <div
-                    key={row.label}
-                    style={{ display: 'flex', justifyContent: 'space-between', fontSize: 18 }}
-                  >
-                    <span lang="fa" style={{ color: 'rgba(242,238,231,0.45)' }}>
-                      {row.label}
-                    </span>
-                    <span style={{ fontWeight: 600 }}>{row.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Reveal>
-
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 22 }}>
-            {snapshot.channels.map((channel, index) => {
-              const grow = interpolate(frame, [60 + index * 12, 106 + index * 12], [0, 1], {
-                extrapolateLeft: 'clamp',
-                extrapolateRight: 'clamp',
-              });
-              const width = (channel.revenue / maxRevenue) * grow;
-              return (
-                <Reveal key={channel.channel} start={44 + index * 10} y={16}>
-                  <div>
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'baseline',
-                      }}
-                    >
-                      <span lang="fa" style={{ fontSize: 20 }}>
-                        {channel.labelFa}
-                      </span>
-                      <span
-                        style={{
-                          fontSize: 17,
-                          color: 'rgba(242,238,231,0.48)',
-                          fontVariantNumeric: 'tabular-nums',
-                        }}
-                      >
-                        {faNumber(channel.conversions)} تبدیل · {faMoneyCompact(channel.revenue)}
-                      </span>
-                    </div>
-                    <div
-                      style={{
-                        marginTop: 10,
-                        height: 9,
-                        borderRadius: 99,
-                        background: 'rgba(255,255,255,0.06)',
-                      }}
-                    >
-                      <div
-                        style={{
-                          height: '100%',
-                          borderRadius: 99,
-                          width: `${Math.min(100, width * 100)}%`,
-                          background:
-                            index === 0
-                              ? 'linear-gradient(90deg, #e3a854, #f0cf9a)'
-                              : 'linear-gradient(90deg, rgba(227,168,84,0.55), rgba(227,168,84,0.22))',
-                        }}
-                      />
-                    </div>
-                  </div>
-                </Reveal>
-              );
-            })}
-
-            <Reveal start={140} y={14}>
-              <div
-                lang="fa"
                 style={{
-                  marginTop: 8,
-                  fontSize: 17,
-                  color: 'rgba(242,238,231,0.42)',
-                  lineHeight: 1.8,
+                  width: 260 + index * 150,
+                  height: 260 + index * 150,
+                  borderRadius: '50%',
+                  border: `1px solid rgba(168,85,247,${0.5 - index * 0.12})`,
+                  boxShadow: index === 0 ? '0 0 80px rgba(124,58,237,0.35) inset' : undefined,
+                  opacity: clamp((frame - index * 10) / 26),
+                  transform: `scale(${1 + (1 - clamp((frame - index * 20) / 60)) * 0.2})`,
                 }}
-              >
-                هر سفارش به یک کمپین، یک کانال و یک آیتم منو نسبت داده می‌شود — پس هزینهٔ بازاریابی
-                از سود کم می‌شود، نه از حدس.
-              </div>
-            </Reveal>
+              />
+            </div>
+          ))}
+          <div
+            style={{
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              transform: 'translate(-50%, -50%)',
+              direction: 'rtl',
+              textAlign: 'center',
+            }}
+          >
+            <div style={{ fontFamily: FONT, fontSize: 15, color: C.dim }}>بازگشت هزینه</div>
+            <GoldText size={56}>{faNumber(marketing.attributionRoi, { decimals: 1 })}×</GoldText>
           </div>
         </div>
-      </Frame>
 
-      <Caption
-        text={script.caption}
-        opacity={interpolate(frame, [110, 130], [0, 1], {
-          extrapolateLeft: 'clamp',
-          extrapolateRight: 'clamp',
-        })}
-      />
-    </Stage>
+        <div style={{ position: 'absolute', right: 128, top: 112, direction: 'rtl', width: 820 }}>
+          <Slam start={0} from={2.4} duration={14}>
+            <CrystalText size={74} weight={800}>
+              {SCRIPT.marketing.title}
+            </CrystalText>
+          </Slam>
+        </div>
+
+        {/* Channel cards */}
+        <div
+          style={{
+            position: 'absolute',
+            right: 140,
+            top: 300,
+            width: 690,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 14,
+            direction: 'rtl',
+          }}
+        >
+          {marketing.channels.map((channel, index) => {
+            const at = 18 + index * 12;
+            const t = ramp(frame, at, 16, Easing.out(Easing.exp));
+            return (
+              <div
+                key={channel.channel}
+                style={{ opacity: clamp(t), transform: `translateX(${(1 - t) * -70}px)` }}
+              >
+                <Panel pad={18} glow={index === 0 ? 0.7 : 0.35}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <div>
+                      <div style={{ fontFamily: FONT, fontSize: 22, color: C.crystal }}>
+                        {channel.labelFa}
+                      </div>
+                      <div style={{ marginTop: 4, fontFamily: FONT, fontSize: 14, color: C.dim }}>
+                        {faNumber(channel.conversions)} تبدیل · {faMoneyCompact(channel.revenue)}{' '}
+                        تومان
+                      </div>
+                    </div>
+                    <GoldText size={26}>{faPercent(channel.share * 100, 0)}</GoldText>
+                  </div>
+                  <div style={{ marginTop: 12 }}>
+                    <Meter
+                      value={clamp(channel.share)}
+                      start={at + 8}
+                      color={index === 0 ? C.gold : C.violet}
+                      height={7}
+                    />
+                  </div>
+                </Panel>
+              </div>
+            );
+          })}
+
+          <div style={{ marginTop: 8, display: 'flex', gap: 10 }}>
+            <Chip tone="gold">
+              <Counter
+                value={marketing.revenueAttributed}
+                start={40}
+                duration={40}
+                format={(n) => faMoneyCompact(n)}
+                size={15}
+              />
+            </Chip>
+            <Chip tone="violet">هزینه {faMoneyCompact(marketing.spend)}</Chip>
+            <Chip tone="crystal">CTR {faPercent(marketing.clickThroughRate * 100)}</Chip>
+          </div>
+        </div>
+      </AbsoluteFill>
+      <Wipe at={228} />
+    </Act>
   );
 }

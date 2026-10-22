@@ -1,7 +1,7 @@
 /**
  * Single source of truth for the commercial's timing.
  *
- * 2,640 frames at 30fps = 88 seconds. Scenes are sequenced in Root.tsx from
+ * 2,100 frames at 30fps = 70 seconds. Scenes are sequenced in Root.tsx from
  * this table, so adding or retiming a scene never requires touching the others.
  */
 
@@ -17,15 +17,15 @@ export interface SceneSpec {
 }
 
 export const SCENES: SceneSpec[] = [
-  { id: 'ColdOpen', frames: 180, labelFa: 'ورود برند' },
-  { id: 'Problem', frames: 240, labelFa: 'مسئله' },
-  { id: 'OrderFlow', frames: 420, labelFa: 'چرخهٔ سفارش' },
-  { id: 'Kitchen', frames: 300, labelFa: 'آشپزخانه' },
-  { id: 'Inventory', frames: 360, labelFa: 'موجودی' },
-  { id: 'Analytics', frames: 390, labelFa: 'تحلیل' },
+  { id: 'ColdOpen', frames: 180, labelFa: 'ورود کریستال' },
+  { id: 'Problem', frames: 240, labelFa: 'بی‌نظمی' },
+  { id: 'OrderFlow', frames: 300, labelFa: 'چرخهٔ سفارش' },
+  { id: 'Kitchen', frames: 240, labelFa: 'آشپزخانه' },
+  { id: 'Inventory', frames: 240, labelFa: 'موجودی' },
+  { id: 'Analytics', frames: 300, labelFa: 'سود' },
   { id: 'Marketing', frames: 240, labelFa: 'بازاریابی' },
-  { id: 'Product', frames: 300, labelFa: 'محصول' },
-  { id: 'Outro', frames: 210, labelFa: 'پایان' },
+  { id: 'Product', frames: 240, labelFa: 'کابین' },
+  { id: 'Outro', frames: 120, labelFa: 'پایان' },
 ];
 
 export const TOTAL_FRAMES = SCENES.reduce((sum, scene) => sum + scene.frames, 0);

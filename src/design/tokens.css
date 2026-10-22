@@ -1,43 +1,48 @@
-/* ==========================================================================
-   A-Corp Restaurant Intelligence — design tokens
+﻿/* ==========================================================================
+   A-Corp Restaurant Intelligence â€” design tokens
    Single source of truth for colour, type, space, radius, elevation, motion.
    Consumed by both the Vite dashboard and the Remotion compositions.
    ========================================================================== */
 
 :root {
   /* --- surfaces (graphite / near-black) ---------------------------------- */
-  --void: #08090b;
-  --surface-1: #0e1013;
-  --surface-2: #14171b;
-  --surface-3: #1a1e23;
-  --surface-inset: #0b0d0f;
-  --surface-hover: #1e232a;
+  --void: #06030c;
+  --surface-1: #0c0716;
+  --surface-2: #130b22;
+  --surface-3: #1b1030;
+  --surface-inset: #080411;
+  --surface-hover: #24163f;
 
   /* --- lines ------------------------------------------------------------- */
-  --line: #22262c;
-  --line-soft: #1a1e23;
-  --line-strong: #333941;
+  --line: #2a1c44;
+  --line-soft: #1d1430;
+  --line-strong: #453267;
 
   /* --- text -------------------------------------------------------------- */
-  --text: #f2eee7;
-  --text-2: #a3a7ad;
-  --text-3: #71767e;
-  --text-inverse: #08090b;
+  --text: #f8f6ff;
+  --text-2: #b6abcf;
+  --text-3: #80739c;
+  --text-inverse: #06030c;
 
   /* --- accents ----------------------------------------------------------- */
-  --amber: #e3a854;
-  --amber-strong: #f0bb68;
-  --amber-soft: rgba(227, 168, 84, 0.12);
-  --amber-line: rgba(227, 168, 84, 0.34);
-  --ember: #d96b33;
-  --ember-soft: rgba(217, 107, 51, 0.12);
-  --green: #56a97c;
-  --green-soft: rgba(86, 169, 124, 0.12);
-  --green-line: rgba(86, 169, 124, 0.34);
-  --red: #c0573f;
-  --red-soft: rgba(192, 87, 63, 0.13);
-  --blue: #5c8aa6;
-  --blue-soft: rgba(92, 138, 166, 0.12);
+  --amber: #e8b45c;
+  --amber-strong: #ffd98a;
+  --amber-soft: rgba(232, 180, 92, 0.13);
+  --amber-line: rgba(232, 180, 92, 0.4);
+  --ember: #d98a4a;
+  --ember-soft: rgba(217, 138, 74, 0.12);
+  --green: #6fd6a8;
+  --green-soft: rgba(111, 214, 168, 0.12);
+  --green-line: rgba(111, 214, 168, 0.34);
+  --red: #ff7d8c;
+  --red-soft: rgba(255, 125, 140, 0.13);
+  --blue: #a78bfa;
+  --blue-soft: rgba(167, 139, 250, 0.14);
+  --violet: #a855f7;
+  --violet-strong: #c4b5fd;
+  --violet-soft: rgba(124, 58, 237, 0.15);
+  --violet-line: rgba(168, 85, 247, 0.38);
+  --glow-violet: 0 0 0 1px var(--violet-line), 0 10px 34px -16px rgba(124, 58, 237, 0.7);
 
   /* --- typography -------------------------------------------------------- */
   --font-fa: 'Vazirmatn', 'Segoe UI', system-ui, sans-serif;
@@ -88,7 +93,7 @@
   --shadow-3: 0 24px 60px -24px rgba(0, 0, 0, 0.85);
   --shadow-dock: 0 -12px 40px -20px rgba(0, 0, 0, 0.9);
   --ring: 0 0 0 1px var(--line-strong);
-  --glow-amber: 0 0 0 1px var(--amber-line), 0 8px 30px -16px rgba(227, 168, 84, 0.55);
+  --glow-amber: 0 0 0 1px var(--amber-line), 0 8px 30px -16px rgba(232, 180, 92, 0.55);
 
   /* --- motion ------------------------------------------------------------ */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -103,3 +108,4 @@
   --dock-h: 76px;
   --content-max: 1560px;
 }
+

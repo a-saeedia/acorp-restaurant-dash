@@ -1,82 +1,50 @@
 /**
- * The commercial's script, as data.
+ * On-screen copy for the crystal cut.
  *
- * There is no Persian text-to-speech on this machine, so narration is carried
- * by kinetic Persian captions. Editing this file changes what the film says
- * without touching a single frame of layout.
+ * Written as speech, not as UI labels: short, concrete, one claim per beat.
+ * Persian is the voice; the wordmark stays Latin.
  */
-
-export type SceneId =
-  | 'ColdOpen'
-  | 'Problem'
-  | 'OrderFlow'
-  | 'Kitchen'
-  | 'Inventory'
-  | 'Analytics'
-  | 'Marketing'
-  | 'Product'
-  | 'Outro';
-
-export interface SceneScript {
-  id: string;
-  kicker: string;
-  title: string;
-  caption: string;
-}
-
-export const SCRIPT: Record<SceneId, SceneScript> = {
-  ColdOpen: {
-    id: 'ColdOpen',
-    kicker: 'ACorp · Tehran',
-    title: 'ACorp',
-    caption: 'رستوران را از حدس‌زدن نجات می‌دهیم.',
+export const SCRIPT = {
+  brand: 'ACorp',
+  tagline: 'سامانهٔ هوشمند مدیریت رستوران',
+  cold: {
+    line: 'از سفارش تا سود، یک سیستم.',
+    sub: 'نسخهٔ ۱٫۰ — تهران',
   },
-  Problem: {
-    id: 'Problem',
-    kicker: 'امروز',
-    title: 'سه جای درز',
-    caption: 'سفارش‌ها پراکنده‌اند، موجودی کور است، تحلیل دیر می‌رسد.',
+  problem: {
+    beats: ['سفارش گم می‌شود.', 'موجودی تمام می‌شود.', 'سود، آخر ماه.', 'بس است.'],
+    caption: 'هر روز همین سه اتفاق، در هر رستوران.',
   },
-  OrderFlow: {
-    id: 'OrderFlow',
-    kicker: 'چرخهٔ سفارش',
-    title: 'از QR تا سود',
-    caption: 'یک سفارش، یازده رویداد قابل ردیابی — بدون یک خط کد اضافه.',
+  order: {
+    title: 'از QR تا آشپزخانه',
+    caption: 'یک اسکن، یازده رویداد، صفر تماس تلفنی.',
+    receipt: 'سفارش تأیید شد',
+    steps: 11,
   },
-  Kitchen: {
-    id: 'Kitchen',
-    kicker: 'آشپزخانه',
-    title: 'هم‌زمان، نه بعداً',
-    caption: 'تیکت همان لحظه‌ای می‌رسد که صندوق تأیید می‌کند.',
+  kitchen: {
+    title: 'آشپزخانه، هم‌زمان.',
+    caption: 'هر تیکت یک ساعت دارد؛ عقب نمان.',
   },
-  Inventory: {
-    id: 'Inventory',
-    kicker: 'موجودی',
-    title: 'قبل از تمام‌شدن',
-    caption: 'کسری موجودی، خودش پیشنهاد خرید می‌سازد — با مقدار و هزینهٔ دقیق.',
+  inventory: {
+    title: 'قبل از تمام شدن.',
+    caption: 'کسری را سیستم می‌بیند، نه وقتی غذا تمام شد.',
+    request: 'درخواست خرید خودکار',
   },
-  Analytics: {
-    id: 'Analytics',
-    kicker: 'تحلیل',
-    title: 'سود، نه فروش',
-    caption: 'هر عدد از همان رویدادها می‌آید؛ هزینه روزشمار می‌شود، نه تخمینی.',
+  analytics: {
+    title: 'سود، نه فروش.',
+    caption: 'هر عدد از همان رویدادهایی می‌آید که امروز ثبت شد.',
   },
-  Marketing: {
-    id: 'Marketing',
-    kicker: 'بازاریابی',
-    title: 'هر تومان، قابل نسبت‌دادن',
-    caption: 'هزینهٔ کمپین، تبدیل و بازگشت سرمایه — در همان صفحه.',
+  marketing: {
+    title: 'هر تومان، برمی‌گردد.',
+    caption: 'هزینه، تبدیل، درآمد — روی یک خط.',
   },
-  Product: {
-    id: 'Product',
-    kicker: 'محصول',
-    title: 'یک صفحه، کل عملیات',
-    caption: 'فارسی، راست‌به‌چپ، و سریع — ساخته‌شده برای میز کار واقعی.',
+  product: {
+    title: 'یک صفحه. کل عملیات.',
+    caption: 'فارسی، راست‌به‌چپ، ساخته‌شده برای سرویس شب.',
   },
-  Outro: {
-    id: 'Outro',
-    kicker: 'ACorp',
-    title: 'داده، سرِ میز',
-    caption: 'متن‌باز (MIT) · ساخته‌شده با Remotion · شبیه‌سازی قطعی',
+  outro: {
+    line: 'داده، سرِ میز.',
+    url: 'acorp.ir/dashboard',
+    meta: 'متن‌باز · MIT · ساخته‌شده با Remotion',
   },
-};
+} as const;

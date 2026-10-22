@@ -1,254 +1,250 @@
-import { Check } from 'lucide-react';
-import { interpolate, useCurrentFrame } from 'remotion';
-import { Reveal } from '../components/motion';
-import { Caption, Frame, Kicker, Stage } from '../components/stage';
-import { faMoney, faNumber } from '../../lib/fa';
-import { SCRIPT } from '../script';
+﻿import { AbsoluteFill, Easing, interpolate, random, useCurrentFrame } from 'remotion';
+import { Act, Chip, CrystalText, GoldText, Panel, Particles, Slam, Wipe } from '../components/kit';
 import { FILM } from '../data';
+import { faNumber } from '../../lib/fa';
+import { SCRIPT } from '../script';
+import { C, FONT, clamp, ramp } from '../theme';
 
-const STEP_START = 40;
-const STEP_GAP = 27;
+function QrGrid() {
+  const frame = useCurrentFrame();
+  const cells = Array.from({ length: 17 * 17 }).map((_, i) => {
+    const r = Math.floor(i / 17);
+    const c = i % 17;
+    const finder =
+      (r < 5 && c < 5) || (r < 5 && c > 11) || (r > 11 && c < 5)
+        ? (r === 0 || r === 4 || c === 0 || c === 4 || (r === 2 && c === 2)) &&
+          !(r === 1 && c === 1) &&
+          !(r === 3 && c === 3)
+        : false;
+    const on = finder || random(`qr-${r}-${c}`) > 0.52;
+    const flicker = r === Math.floor((frame * 0.9) % 17) && frame < 60;
+    return { r, c, on, flicker };
+  });
+
+  return (
+    <div
+      style={{
+        position: 'relative',
+        width: 238,
+        height: 238,
+        display: 'grid',
+        gridTemplateColumns: 'repeat(17, 1fr)',
+        gridTemplateRows: 'repeat(17, 1fr)',
+        gap: 2,
+        padding: 8,
+        borderRadius: 10,
+        background: 'rgba(255,255,255,0.96)',
+      }}
+    >
+      {cells.map((cell, i) => (
+        <div
+          key={i}
+          style={{
+            borderRadius: 1,
+            background: cell.on ? (cell.flicker ? C.gold : '#120a24') : 'transparent',
+            opacity: cell.on ? 1 : 0,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
 
 export function OrderFlow() {
   const frame = useCurrentFrame();
-  const script = SCRIPT.OrderFlow;
-  const { sample, events } = FILM;
-
-  const visible = events.filter((_, index) => frame >= STEP_START + index * STEP_GAP).length;
-  const current = events[Math.max(0, visible - 1)];
+  const stage = interpolate(frame, [0, 300], [1.02, 1.1]);
+  const scan = ramp(frame, 16, 30, Easing.inOut(Easing.cubic));
+  const phoneIn = ramp(frame, 0, 18, Easing.out(Easing.exp));
+  const events = FILM.events.slice(0, 11);
 
   return (
-    <Stage bloom="right">
-      <Frame align="top">
-        <div
-          style={{
-            marginTop: 8,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-          }}
-        >
-          <div>
-            <Reveal start={0}>
-              <Kicker>{script.kicker}</Kicker>
-            </Reveal>
-            <Reveal start={4} y={22}>
-              <h1
-                lang="fa"
-                style={{ fontSize: 66, fontWeight: 750, margin: 0, letterSpacing: '-0.03em' }}
-              >
-                {script.title}
-              </h1>
-            </Reveal>
-          </div>
-          <Reveal start={10} y={14}>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 12,
-                border: '1px solid rgba(227,168,84,0.28)',
-                background: 'rgba(227,168,84,0.07)',
-                color: '#f0c98c',
-                borderRadius: 999,
-                padding: '12px 22px',
-                fontSize: 21,
-              }}
-            >
-              <span style={{ width: 8, height: 8, borderRadius: 99, background: '#e3a854' }} />
-              <span lang="fa">{current?.titleFa ?? 'در انتظار ثبت'}</span>
-            </div>
-          </Reveal>
+    <Act seed={34} shards={6} caption={SCRIPT.order.caption} captionStart={12}>
+      <AbsoluteFill style={{ transform: `scale(${stage})` }}>
+        <div style={{ position: 'absolute', right: 128, top: 150, direction: 'rtl', width: 760 }}>
+          <Slam start={2} from={2.6} duration={14}>
+            <CrystalText size={76} weight={800}>
+              {SCRIPT.order.title}
+            </CrystalText>
+          </Slam>
         </div>
 
-        <div style={{ display: 'flex', gap: 44, marginTop: 48, alignItems: 'flex-start' }}>
-          {/* Receipt */}
-          <Reveal start={18} y={26} style={{ flex: '0 0 470px' }}>
+        {/* Phone + QR */}
+        <div
+          style={{
+            position: 'absolute',
+            right: 250,
+            top: 330,
+            width: 372,
+            height: 588,
+            perspective: 1200,
+            opacity: phoneIn,
+            transform: `translateY(${(1 - phoneIn) * 140}px) rotateY(${-18 + (1 - phoneIn) * 12}deg) rotateX(7deg) scale(${0.94 + phoneIn * 0.06})`,
+          }}
+        >
+          <Panel
+            pad={26}
+            glow={0.9}
+            style={{
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
             <div
               style={{
-                border: '1px solid rgba(255,255,255,0.10)',
-                background:
-                  'linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.018))',
-                borderRadius: 22,
-                padding: '30px 30px 26px',
-                position: 'relative',
-                overflow: 'hidden',
+                width: 120,
+                height: 6,
+                borderRadius: 99,
+                background: 'rgba(255,255,255,0.18)',
               }}
-            >
+            />
+            <div style={{ marginTop: 28, position: 'relative' }}>
+              <QrGrid />
               <div
                 style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  fontSize: 17,
-                  color: 'rgba(242,238,231,0.42)',
+                  position: 'absolute',
+                  left: 6,
+                  right: 6,
+                  top: 6 + scan * 210,
+                  height: 3,
+                  background: C.goldHi,
+                  boxShadow: `0 0 26px ${C.gold}, 0 0 60px ${C.gold}`,
+                  opacity: scan > 0 && scan < 1 ? 1 : 0,
                 }}
-              >
-                <span>سفارش</span>
-                <span style={{ fontVariantNumeric: 'tabular-nums' }}>#{sample.reference}</span>
-              </div>
-
-              <div style={{ marginTop: 22, fontSize: 30, fontWeight: 700 }} lang="fa">
-                {sample.customerNameFa}
-              </div>
-              <div
-                style={{ marginTop: 6, fontSize: 18, color: 'rgba(242,238,231,0.45)' }}
-                lang="fa"
-              >
-                {sample.tableFa} · QR
-              </div>
-
-              <div style={{ height: 1, background: 'rgba(255,255,255,0.10)', margin: '24px 0' }} />
-
-              {sample.items.map((item) => (
-                <div
-                  key={item.id}
-                  style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14 }}
-                  lang="fa"
-                >
-                  <span style={{ fontSize: 21 }}>
-                    {faNumber(item.quantity)} × {item.nameFa}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: 21,
-                      color: 'rgba(242,238,231,0.72)',
-                      fontVariantNumeric: 'tabular-nums',
-                    }}
-                  >
-                    {faMoney(item.lineSubtotal)}
-                  </span>
-                </div>
-              ))}
-
-              <div style={{ height: 1, background: 'rgba(255,255,255,0.10)', margin: '22px 0' }} />
-
-              <div
-                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}
-              >
-                <span style={{ fontSize: 19, color: 'rgba(242,238,231,0.45)' }}>مبلغ کل</span>
-                <span style={{ fontSize: 34, fontWeight: 750, color: '#f0c98c' }}>
-                  {faMoney(sample.total)}
-                </span>
-              </div>
-
-              <div
-                style={{
-                  marginTop: 24,
-                  display: 'flex',
-                  gap: 8,
-                  flexWrap: 'wrap',
-                }}
-              >
-                {sample.items.flatMap((item) =>
-                  item.customizationLabelsFa.map((label) => (
-                    <span
-                      key={`${item.id}:${label}`}
-                      lang="fa"
-                      style={{
-                        fontSize: 15,
-                        padding: '6px 12px',
-                        borderRadius: 999,
-                        border: '1px solid rgba(255,255,255,0.12)',
-                        color: 'rgba(242,238,231,0.62)',
-                      }}
-                    >
-                      {label}
-                    </span>
-                  )),
-                )}
+              />
+            </div>
+            <div style={{ marginTop: 30, width: '100%', direction: 'rtl' }}>
+              <GoldText size={27}>{faNumber(FILM.sample.total)} تومان</GoldText>
+              <div style={{ marginTop: 10, fontFamily: FONT, fontSize: 20, color: C.mist }}>
+                {FILM.sample.customerNameFa} · {FILM.sample.tableFa ?? 'بیرون‌بر'}
               </div>
             </div>
-          </Reveal>
+            <div style={{ marginTop: 22, display: 'flex', gap: 8 }}>
+              <Chip tone="crystal">{FILM.sample.reference}</Chip>
+              <Chip tone="violet">QR</Chip>
+            </div>
+          </Panel>
+        </div>
 
-          {/* Event rail */}
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 7 }}>
+        {/* Pipeline */}
+        <div style={{ position: 'absolute', left: 104, top: 330, width: 660 }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              direction: 'rtl',
+              marginBottom: 12,
+            }}
+          >
+            <span style={{ fontFamily: FONT, fontSize: 19, color: C.dim }}>رویداد</span>
+            <span style={{ fontFamily: FONT, fontSize: 19, color: C.dim }}>وضعیت</span>
+          </div>
+          <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 7 }}>
             {events.map((event, index) => {
-              const at = STEP_START + index * STEP_GAP;
-              const revealed = frame >= at;
-              if (!revealed) return null;
-              const isLast = index === events.length - 1 || frame < at + STEP_GAP;
+              const at = 74 + index * 7;
+              const t = ramp(frame, at, 10, Easing.out(Easing.exp));
+              const active = frame >= at && frame < at + 26;
               return (
                 <div
                   key={event.id}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 16,
-                    padding: '9px 18px',
-                    borderRadius: 12,
-                    border: `1px solid ${
-                      isLast
-                        ? 'rgba(227,168,84,0.42)'
-                        : revealed
-                          ? 'rgba(255,255,255,0.09)'
-                          : 'rgba(255,255,255,0.04)'
-                    }`,
-                    background: isLast
-                      ? 'rgba(227,168,84,0.09)'
-                      : revealed
-                        ? 'rgba(255,255,255,0.028)'
-                        : 'transparent',
-                    opacity: interpolate(frame, [at - 8, at + 10], [0, 1], {
-                      extrapolateLeft: 'clamp',
-                      extrapolateRight: 'clamp',
-                    }),
-                    transform: `translateX(${interpolate(frame, [at - 8, at + 10], [18, 0], {
-                      extrapolateLeft: 'clamp',
-                      extrapolateRight: 'clamp',
-                    })}px)`,
+                    gap: 12,
+                    direction: 'rtl',
+                    height: 34,
+                    padding: '0 12px',
+                    borderRadius: 9,
+                    border: `1px solid ${active ? 'rgba(232,180,92,0.45)' : 'rgba(196,181,253,0.10)'}`,
+                    background: active ? 'rgba(232,180,92,0.10)' : 'rgba(255,255,255,0.025)',
+                    opacity: clamp(t * 1.2),
+                    transform: `translateX(${(1 - t) * 40}px)`,
                   }}
                 >
                   <span
                     style={{
-                      width: 28,
-                      height: 28,
-                      borderRadius: 8,
+                      width: 22,
+                      height: 22,
+                      borderRadius: 6,
                       display: 'grid',
                       placeItems: 'center',
-                      flex: 'none',
-                      background: revealed ? 'rgba(227,168,84,0.16)' : 'rgba(255,255,255,0.05)',
-                      color: revealed ? '#f0c98c' : 'rgba(242,238,231,0.28)',
+                      fontFamily: FONT,
+                      fontSize: 12,
+                      color: active ? C.goldHi : C.dim,
+                      border: `1px solid ${active ? 'rgba(232,180,92,0.5)' : 'rgba(255,255,255,0.12)'}`,
                     }}
                   >
-                    {revealed ? (
-                      <Check size={15} strokeWidth={2.6} />
-                    ) : (
-                      <span style={{ fontSize: 13 }}>{faNumber(index + 1)}</span>
-                    )}
+                    {faNumber(index + 1)}
                   </span>
                   <span
-                    lang="fa"
                     style={{
-                      fontSize: 18,
-                      color: revealed ? 'rgba(242,238,231,0.9)' : 'rgba(242,238,231,0.3)',
                       flex: 1,
+                      fontFamily: FONT,
+                      fontSize: 19,
+                      color: active ? C.crystal : C.mist,
                     }}
                   >
                     {event.titleFa}
                   </span>
                   <span
                     style={{
-                      fontSize: 15,
-                      color: 'rgba(242,238,231,0.30)',
-                      fontVariantNumeric: 'tabular-nums',
+                      width: 7,
+                      height: 7,
+                      borderRadius: 99,
+                      background: active ? C.gold : 'rgba(168,85,247,0.55)',
+                      boxShadow: active ? `0 0 14px ${C.gold}` : undefined,
                     }}
-                  >
-                    {faNumber(index + 1)}/{faNumber(events.length)}
-                  </span>
+                  />
                 </div>
               );
             })}
+            <div
+              style={{
+                position: 'absolute',
+                right: 35,
+                top: `${clamp((frame - 74) / 77) * 100}%`,
+                width: 2,
+                height: 30,
+                background: `linear-gradient(180deg, transparent, ${C.goldHi})`,
+                opacity: frame > 70 && frame < 190 ? 0.9 : 0,
+              }}
+            />
           </div>
         </div>
-      </Frame>
 
-      <Caption
-        text={script.caption}
-        opacity={interpolate(frame, [STEP_START, STEP_START + 18], [0, 1], {
-          extrapolateLeft: 'clamp',
-          extrapolateRight: 'clamp',
-        })}
-      />
-    </Stage>
+        {/* Receipt */}
+        <div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            bottom: 128,
+            transform: `translateX(-50%) translateY(${(1 - ramp(frame, 196, 22, Easing.out(Easing.exp))) * 120}px)`,
+            opacity: ramp(frame, 196, 14),
+          }}
+        >
+          <Panel pad={24} glow={0.7} style={{ width: 560, direction: 'rtl' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <div style={{ fontFamily: FONT, fontSize: 14, color: C.dim }}>رسید دیجیتال</div>
+                <div style={{ marginTop: 4, fontFamily: FONT, fontSize: 25, color: C.crystal }}>
+                  {FILM.sample.items[0]?.nameFa ?? 'سفارش'}
+                </div>
+              </div>
+              <Slam start={204} from={2.2} duration={12}>
+                <Chip tone="gold">{SCRIPT.order.receipt}</Chip>
+              </Slam>
+            </div>
+            <div style={{ marginTop: 12, fontFamily: FONT, fontSize: 17, color: C.mist }}>
+              {faNumber(FILM.sample.items[0]?.quantity ?? 1)} × ·{' '}
+              {faNumber(FILM.sample.prepMinutes)} دقیقه · یازده رویداد ثبت شد
+            </div>
+          </Panel>
+        </div>
+      </AbsoluteFill>
+
+      <Particles at={82} count={22} x={20} y={50} />
+      <Wipe at={286} />
+    </Act>
   );
 }

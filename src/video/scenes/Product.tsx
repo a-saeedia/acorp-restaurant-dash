@@ -1,298 +1,257 @@
-import { interpolate, useCurrentFrame } from 'remotion';
-import { Reveal } from '../components/motion';
-import { Caption, Frame, Kicker, Stage } from '../components/stage';
-import { faMoneyCompact, faNumber, faPercent } from '../../lib/fa';
-import { analyticsFor } from '../../simulation/selectors';
-import { SCRIPT } from '../script';
+﻿import { AbsoluteFill, interpolate, useCurrentFrame } from 'remotion';
+import {
+  Act,
+  Chip,
+  CrystalText,
+  GoldText,
+  Meter,
+  Panel,
+  Ring,
+  Slam,
+  Spark,
+  Wipe,
+} from '../components/kit';
 import { FILM } from '../data';
+import { faMoneyCompact, faNumber, faPercent } from '../../lib/fa';
+import { SCRIPT } from '../script';
+import { C, FONT, ramp } from '../theme';
 
-const NAV = ['نمای کلی', 'سفارش‌ها', 'آشپزخانه', 'موجودی', 'تأمین‌کنندگان', 'تحلیل', 'بازاریابی'];
+function Kpi({ label, value, tone }: { label: string; value: string; tone?: 'gold' }) {
+  return (
+    <Panel pad={14} glow={0.5} radius={14} style={{ direction: 'rtl' }}>
+      <div style={{ fontFamily: FONT, fontSize: 14, color: C.mist }}>{label}</div>
+      <div style={{ marginTop: 5 }}>
+        {tone === 'gold' ? (
+          <GoldText size={21}>{value}</GoldText>
+        ) : (
+          <span style={{ fontFamily: FONT, fontSize: 24, color: C.crystal }}>{value}</span>
+        )}
+      </div>
+    </Panel>
+  );
+}
 
 export function Product() {
   const frame = useCurrentFrame();
-  const script = SCRIPT.Product;
-  const snapshot = analyticsFor(FILM.base, 'day');
-  const { pnl } = snapshot;
-
-  const enter = interpolate(frame, [12, 52], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-    easing: (t) => 1 - Math.pow(1 - t, 3),
-  });
-
-  const metrics = [
-    { label: 'فروش خالص امروز', value: faMoneyCompact(pnl.netSales) },
-    { label: 'سفارش', value: faNumber(snapshot.orderCount) },
-    { label: 'میانگین سفارش', value: faMoneyCompact(snapshot.averageOrderValue) },
-    { label: 'حاشیهٔ سود', value: faPercent(Math.round(pnl.netMarginPct * 10) / 10) },
-  ];
-
-  const bars = [0.62, 0.78, 0.54, 0.9, 0.72, 0.83, 0.66, 0.95, 0.74, 0.88, 0.69, 0.81];
+  const { pnl, daily } = FILM.analytics;
+  const orbit = interpolate(frame, [0, 240], [-13, -3]);
+  const tilt = interpolate(frame, [0, 240], [9, 3]);
+  const push = interpolate(frame, [0, 240], [0.96, 1.08]);
+  const max = Math.max(1, ...daily.map((d) => d.netSales));
+  const points = daily.slice(-18).map((d) => d.netSales / max);
 
   return (
-    <Stage bloom="center">
-      <Frame align="top">
+    <Act seed={110} shards={4} grid streak={0.6}>
+      <AbsoluteFill style={{ perspective: 1700, display: 'grid', placeItems: 'center' }}>
         <div
           style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-            marginTop: 0,
+            width: 1560,
+            height: 880,
+            position: 'relative',
+            transformStyle: 'preserve-3d',
+            transform: `scale(${push}) rotateY(${orbit}deg) rotateX(${tilt}deg)`,
           }}
         >
-          <div>
-            <Reveal start={0}>
-              <Kicker>{script.kicker}</Kicker>
-            </Reveal>
-            <Reveal start={4} y={18}>
-              <h1
-                lang="fa"
-                style={{ fontSize: 58, fontWeight: 750, margin: 0, letterSpacing: '-0.03em' }}
-              >
-                {script.title}
-              </h1>
-            </Reveal>
-          </div>
-          <Reveal start={14}>
-            <span lang="fa" style={{ fontSize: 17, color: 'rgba(242,238,231,0.38)' }}>
-              Persian-first · RTL · بدون وابستگی به ابر
-            </span>
-          </Reveal>
-        </div>
-
-        <div
-          style={{
-            marginTop: 30,
-            opacity: enter,
-            transform: `translateY(${(1 - enter) * 46}px) scale(${0.97 + enter * 0.03})`,
-            borderRadius: 20,
-            border: '1px solid rgba(255,255,255,0.10)',
-            background: '#0d0e11',
-            overflow: 'hidden',
-            boxShadow: '0 50px 120px rgba(0,0,0,0.55)',
-          }}
-        >
-          {/* window chrome */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 12,
-              padding: '12px 18px',
-              borderBottom: '1px solid rgba(255,255,255,0.07)',
-              background: 'rgba(255,255,255,0.025)',
-            }}
-          >
-            <span style={{ width: 10, height: 10, borderRadius: 99, background: '#3a3d44' }} />
-            <span style={{ width: 10, height: 10, borderRadius: 99, background: '#3a3d44' }} />
-            <span style={{ width: 10, height: 10, borderRadius: 99, background: '#3a3d44' }} />
-            <div
-              style={{
-                marginInlineStart: 16,
-                flex: 1,
-                height: 26,
-                borderRadius: 8,
-                background: 'rgba(255,255,255,0.04)',
-                display: 'flex',
-                alignItems: 'center',
-                paddingInline: 12,
-                fontSize: 13,
-                color: 'rgba(242,238,231,0.35)',
-                gap: 8,
-              }}
+          <Slam start={0} from={1.6} duration={18} style={{ position: 'absolute', inset: 0 }}>
+            <Panel
+              pad={0}
+              glow={1}
+              radius={26}
+              style={{ height: '100%', overflow: 'hidden', background: 'rgba(11,6,21,0.92)' }}
             >
-              <span style={{ color: '#8fb98c' }}>●</span> acorp.ir/dashboard
-            </div>
-            <span style={{ fontSize: 15, letterSpacing: '0.04em', fontWeight: 700 }}>ACorp</span>
-          </div>
-
-          <div style={{ display: 'flex', height: 648 }}>
-            {/* sidebar (right in RTL) */}
-            <div
-              style={{
-                width: 208,
-                borderInlineStart: '1px solid rgba(255,255,255,0.07)',
-                padding: '22px 16px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 6,
-                background: 'rgba(255,255,255,0.014)',
-              }}
-            >
+              {/* top bar */}
               <div
                 style={{
+                  height: 64,
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 10,
-                  paddingInline: 8,
-                  marginBottom: 16,
+                  justifyContent: 'space-between',
+                  padding: '0 26px',
+                  direction: 'rtl',
+                  borderBottom: '1px solid rgba(196,181,253,0.12)',
+                  background: 'rgba(124,58,237,0.10)',
                 }}
               >
-                <span
-                  style={{
-                    width: 30,
-                    height: 30,
-                    borderRadius: 9,
-                    background: '#e3a854',
-                    display: 'grid',
-                    placeItems: 'center',
-                    color: '#141210',
-                    fontWeight: 800,
-                    fontSize: 15,
-                  }}
-                >
-                  A
-                </span>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ fontSize: 15, fontWeight: 700 }}>ACorp</span>
-                  <span lang="fa" style={{ fontSize: 11, color: 'rgba(242,238,231,0.34)' }}>
-                    شعبه ونک
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <CrystalText size={24} weight={900}>
+                    {SCRIPT.brand}
+                  </CrystalText>
+                  <span style={{ fontFamily: FONT, fontSize: 15, color: C.mist }}>
+                    داشبورد عملیات
                   </span>
                 </div>
-              </div>
-
-              {NAV.map((item, index) => (
-                <div
-                  key={item}
-                  lang="fa"
-                  style={{
-                    padding: '9px 12px',
-                    borderRadius: 9,
-                    fontSize: 14,
-                    color: index === 0 ? '#f0c98c' : 'rgba(242,238,231,0.45)',
-                    background: index === 0 ? 'rgba(227,168,84,0.10)' : 'transparent',
-                  }}
-                >
-                  {item}
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <Chip tone="gold" size={12}>
+                    شبِ کاری
+                  </Chip>
+                  <Chip tone="crystal" size={12}>
+                    {faNumber(FILM.analytics.orderCount)} سفارش
+                  </Chip>
                 </div>
-              ))}
-            </div>
-
-            {/* content */}
-            <div
-              style={{
-                flex: 1,
-                padding: '24px 26px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 16,
-              }}
-            >
-              <div style={{ display: 'flex', gap: 12 }}>
-                {metrics.map((metric, index) => (
-                  <div
-                    key={metric.label}
-                    style={{
-                      flex: 1,
-                      border: '1px solid rgba(255,255,255,0.07)',
-                      borderRadius: 12,
-                      padding: '14px 16px',
-                      background: 'rgba(255,255,255,0.02)',
-                      opacity: interpolate(frame, [40 + index * 6, 56 + index * 6], [0, 1], {
-                        extrapolateLeft: 'clamp',
-                        extrapolateRight: 'clamp',
-                      }),
-                    }}
-                  >
-                    <div lang="fa" style={{ fontSize: 12, color: 'rgba(242,238,231,0.38)' }}>
-                      {metric.label}
-                    </div>
-                    <div style={{ fontSize: 24, fontWeight: 700, marginTop: 6 }}>
-                      {metric.value}
-                    </div>
-                  </div>
-                ))}
               </div>
 
-              <div style={{ display: 'flex', gap: 14, flex: 1 }}>
+              <div style={{ display: 'flex', height: 'calc(100% - 64px)', direction: 'rtl' }}>
+                {/* sidebar (right, RTL) */}
                 <div
                   style={{
-                    flex: 1.6,
-                    border: '1px solid rgba(255,255,255,0.07)',
-                    borderRadius: 14,
-                    padding: '16px 18px',
-                    background: 'rgba(255,255,255,0.018)',
+                    width: 190,
+                    padding: 18,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 8,
+                    borderLeft: '1px solid rgba(196,181,253,0.10)',
+                    direction: 'rtl',
                   }}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}>
-                    <span lang="fa" style={{ color: 'rgba(242,238,231,0.45)' }}>
-                      فروش خالص · ۱۲ روز
-                    </span>
-                    <span style={{ color: '#f0c98c' }}>{faMoneyCompact(pnl.netSales)}</span>
-                  </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'flex-end',
-                      gap: 8,
-                      height: 190,
-                      marginTop: 22,
-                    }}
-                  >
-                    {bars.map((bar, index) => {
-                      const grow = interpolate(frame, [54 + index * 3, 84 + index * 3], [0, 1], {
-                        extrapolateLeft: 'clamp',
-                        extrapolateRight: 'clamp',
-                      });
-                      return (
-                        <div
-                          key={`${bar}-${index}`}
-                          style={{
-                            flex: 1,
-                            height: `${bar * grow * 100}%`,
-                            borderRadius: '5px 5px 2px 2px',
-                            background:
-                              index === bars.length - 2
-                                ? 'linear-gradient(180deg, #f0c98c, #c98f3f)'
-                                : 'linear-gradient(180deg, rgba(227,168,84,0.6), rgba(227,168,84,0.14))',
-                          }}
-                        />
-                      );
-                    })}
+                  {['نمای کلی', 'سفارش‌ها', 'آشپزخانه', 'انبار', 'گزارش‌ها', 'بازاریابی'].map(
+                    (item, index) => (
+                      <div
+                        key={item}
+                        style={{
+                          padding: '9px 12px',
+                          borderRadius: 9,
+                          fontFamily: FONT,
+                          fontSize: 14,
+                          color: index === 0 ? C.goldHi : C.mist,
+                          background: index === 0 ? 'rgba(232,180,92,0.10)' : 'transparent',
+                          border: `1px solid ${index === 0 ? 'rgba(232,180,92,0.25)' : 'transparent'}`,
+                        }}
+                      >
+                        {item}
+                      </div>
+                    ),
+                  )}
+                  <div style={{ marginTop: 'auto' }}>
+                    <Meter value={0.62} start={30} height={5} />
+                    <div style={{ marginTop: 8, fontFamily: FONT, fontSize: 13, color: C.mist }}>
+                      ظرفیت آشپزخانه
+                    </div>
                   </div>
                 </div>
 
+                {/* main */}
                 <div
                   style={{
                     flex: 1,
-                    border: '1px solid rgba(255,255,255,0.07)',
-                    borderRadius: 14,
-                    padding: '16px 18px',
-                    background: 'rgba(255,255,255,0.018)',
+                    padding: 20,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 14,
                   }}
                 >
-                  <div lang="fa" style={{ fontSize: 13, color: 'rgba(242,238,231,0.45)' }}>
-                    پرفروش‌های امروز
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+                    <Kpi label="فروش امروز" value={faMoneyCompact(pnl.grossSales)} />
+                    <Kpi
+                      label="سود خالص"
+                      value={faMoneyCompact(pnl.netOperatingProfit)}
+                      tone="gold"
+                    />
+                    <Kpi
+                      label="میانگین سفارش"
+                      value={faMoneyCompact(FILM.analytics.averageOrderValue)}
+                    />
+                    <Kpi label="حاشیهٔ سود" value={faPercent(pnl.netMarginPct)} />
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 13, marginTop: 16 }}>
-                    {snapshot.topItems.slice(0, 5).map((item, index) => (
+
+                  <div
+                    style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: 14, flex: 1 }}
+                  >
+                    <Panel
+                      pad={16}
+                      glow={0.5}
+                      style={{ direction: 'rtl', display: 'flex', flexDirection: 'column' }}
+                    >
                       <div
-                        key={item.menuItemId}
-                        style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
                       >
-                        <span lang="fa" style={{ color: 'rgba(242,238,231,0.72)' }}>
-                          {faNumber(index + 1)}. {item.nameFa}
+                        <span style={{ fontFamily: FONT, fontSize: 14, color: C.mist }}>
+                          روند فروش
                         </span>
-                        <span style={{ color: 'rgba(242,238,231,0.42)' }}>
-                          {faNumber(item.quantity)}
-                        </span>
+                        <GoldText size={13}>۳۰ روز</GoldText>
                       </div>
-                    ))}
+                      <div style={{ marginTop: 8, flex: 1, display: 'grid', placeItems: 'center' }}>
+                        <Spark points={points} start={14} duration={44} width={640} height={250} />
+                      </div>
+                    </Panel>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                      <Panel
+                        pad={14}
+                        glow={0.6}
+                        style={{ direction: 'rtl', display: 'flex', alignItems: 'center', gap: 14 }}
+                      >
+                        <Ring
+                          value={pnl.netMarginPct / 100}
+                          start={20}
+                          duration={34}
+                          size={96}
+                          stroke={8}
+                          color="gold"
+                        >
+                          <span style={{ fontFamily: FONT, fontSize: 15, color: C.crystal }}>
+                            {faPercent(pnl.netMarginPct, 0)}
+                          </span>
+                        </Ring>
+                        <div>
+                          <div style={{ fontFamily: FONT, fontSize: 12, color: C.dim }}>
+                            سود / فروش
+                          </div>
+                          <div style={{ marginTop: 4 }}>
+                            <GoldText size={18}>{faMoneyCompact(pnl.netOperatingProfit)}</GoldText>
+                          </div>
+                        </div>
+                      </Panel>
+
+                      <Panel pad={14} glow={0.4} style={{ direction: 'rtl', flex: 1 }}>
+                        <div
+                          style={{ fontFamily: FONT, fontSize: 14, color: C.mist, marginBottom: 8 }}
+                        >
+                          آخرین سفارش‌ها
+                        </div>
+                        {FILM.after.orders.slice(0, 3).map((order, index) => (
+                          <div
+                            key={order.id}
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              padding: '7px 0',
+                              borderBottom: index < 2 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                              opacity: ramp(frame, 26 + index * 8, 12),
+                            }}
+                          >
+                            <span style={{ fontFamily: FONT, fontSize: 14, color: C.mist }}>
+                              {order.customerNameFa}
+                            </span>
+                            <span style={{ fontFamily: FONT, fontSize: 11, color: C.goldHi }}>
+                              {faMoneyCompact(order.total)}
+                            </span>
+                          </div>
+                        ))}
+                      </Panel>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </Panel>
+          </Slam>
+
+          {/* floating callouts */}
+          <div style={{ position: 'absolute', left: -40, top: 120, opacity: ramp(frame, 60, 18) }}>
+            <Chip tone="violet">همه چیز زنده</Chip>
+          </div>
+          <div
+            style={{ position: 'absolute', left: -56, bottom: 150, opacity: ramp(frame, 96, 18) }}
+          >
+            <Chip tone="gold">فارسی · RTL</Chip>
           </div>
         </div>
-      </Frame>
-
-      <Caption
-        text={script.caption}
-        opacity={interpolate(frame, [60, 80], [0, 1], {
-          extrapolateLeft: 'clamp',
-          extrapolateRight: 'clamp',
-        })}
-      />
-    </Stage>
+      </AbsoluteFill>
+      <Wipe at={228} />
+    </Act>
   );
 }

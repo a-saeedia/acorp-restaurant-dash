@@ -1,4 +1,4 @@
-import type { ComponentType } from 'react';
+﻿import type { ComponentType } from 'react';
 import { AbsoluteFill, Audio, Composition, Sequence, staticFile } from 'remotion';
 import '../design/index.css';
 import { SCENES, TOTAL_FRAMES, VIDEO_FPS, VIDEO_HEIGHT, VIDEO_WIDTH } from './timeline';
@@ -33,7 +33,7 @@ function Commercial() {
   let offset = 0;
 
   return (
-    <AbsoluteFill style={{ backgroundColor: '#08090b' }}>
+    <AbsoluteFill style={{ backgroundColor: '#050208' }}>
       <Audio src={staticFile('audio/bed.wav')} volume={0.55} />
       {SCENES.map((scene) => {
         const Scene = REGISTRY[scene.id];
@@ -46,7 +46,7 @@ function Commercial() {
             from={from}
             durationInFrames={scene.frames}
             premountFor={30}
-            name={`${scene.id} — ${scene.labelFa}`}
+            name={`${scene.id} â€” ${scene.labelFa}`}
           >
             <Scene />
           </Sequence>

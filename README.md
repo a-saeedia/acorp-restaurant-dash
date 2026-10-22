@@ -1,14 +1,14 @@
-# ACorp — Restaurant Intelligence
+﻿# ACorp â€” Restaurant Intelligence
 
-A Persian-first (RTL) restaurant operations console, plus an 88-second
+A Persian-first (RTL) restaurant operations console, plus a 70-second
 cinematic commercial rendered from the same code. Both run on one deterministic
 simulation engine: every number on screen is derived from the same event stream,
 so the dashboard, the tests and the film can never disagree.
 
-> **Brand:** ACorp (Latin wordmark) · **UI language:** Persian · **Currency:** Toman
+> **Brand:** ACorp (Latin wordmark) Â· **UI language:** Persian Â· **Currency:** Toman
 
 **Live dashboard:** <https://acorp-restaurant-dash.darkestjokepossible.workers.dev/>
-**Commercial (MP4, 88s):** [download](https://github.com/a-saeedia/acorp-restaurant-dash/releases/download/v1.0.0/acorp-commercial.mp4)
+**Commercial (MP4, 70s):** [download](https://github.com/a-saeedia/acorp-restaurant-dash/releases/download/v2.0.0/acorp-commercial.mp4)
 
 [![CI](https://github.com/a-saeedia/acorp-restaurant-dash/actions/workflows/ci.yml/badge.svg)](https://github.com/a-saeedia/acorp-restaurant-dash/actions/workflows/ci.yml)
 
@@ -25,12 +25,12 @@ so the dashboard, the tests and the film can never disagree.
 | Operations dashboard    | `src/dashboard`                 | React 19, Vite 8, Recharts |
 | Simulation engine       | `src/simulation`                | Pure TypeScript, zero deps |
 | Shared UI kit           | `src/components` + `src/design` | CSS custom properties      |
-| Commercial (88s, 1080p) | `src/video`                     | Remotion 4                 |
+| Commercial (70s, 1080p) | `src/video`                     | Remotion 4                 |
 | Tests                   | `src/test`                      | Vitest + Testing Library   |
 
 Nine screens: overview, orders, kitchen, inventory, suppliers, analytics,
 marketing, notifications, and a global simulation dock that replays the full
-11-step order workflow at 20× speed.
+11-step order workflow at 20Ã— speed.
 
 ---
 
@@ -47,10 +47,10 @@ pnpm demo           # serve dist/ on http://127.0.0.1:4318 (fixed port)
 Video:
 
 ```bash
-pnpm audio          # synthesise public/audio/bed.wav (88s, no samples)
+pnpm audio          # synthesise public/audio/bed.wav (70s, no samples)
 pnpm video:stills   # render 10 PNG stills into out/stills/
 pnpm video          # Remotion Studio
-pnpm video:render   # out/acorp-commercial.mp4 (1920×1080, 30fps, H.264)
+pnpm video:render   # out/acorp-commercial.mp4 (1920Ã—1080, 30fps, H.264)
 ```
 
 ---
@@ -73,10 +73,10 @@ Money is stored as integer Toman. No floats touch a currency value.
 ## Persian engineering notes
 
 - `dir="rtl"` on `<html>`, logical CSS properties (`inset-inline`, `margin-inline`)
-  everywhere — the layout mirrors without a second stylesheet.
+  everywhere â€” the layout mirrors without a second stylesheet.
 - Jalali dates and Persian digits come from a single `src/lib/fa.ts` module
   (`Intl` based), so the dashboard, exports and video all format identically.
-- Vazirmatn variable font is self-hosted (`public/fonts`) — no Google Fonts, no
+- Vazirmatn variable font is self-hosted (`public/fonts`) â€” no Google Fonts, no
   network at runtime, no flash of tofu.
 - Numerals are tabular in tables and metrics so columns do not jitter.
 
@@ -93,14 +93,14 @@ cp out/acorp-commercial.mp4 dist/     # optional: ship the film with the site
 pnpm exec wrangler deploy
 ```
 
-Note: `wrangler pages deploy` will refuse to run here — the repository ships a
+Note: `wrangler pages deploy` will refuse to run here â€” the repository ships a
 Workers config (`assets.directory = ./dist`), which Cloudflare now recommends
 over Pages. No server, no database, no secrets. The app bundle is ~710 kB
 (209 kB gzip).
 
 ---
 
-## Licensing — read this
+## Licensing â€” read this
 
 - **This repository's code:** MIT (see `LICENSE`).
 - **Remotion:** Remotion is _source-available_, not OSI open source. It is free
@@ -117,23 +117,23 @@ If you fork this and remove Remotion, the rest of the project is unambiguously M
 ## Film script
 
 The narration is data, not code: `src/video/script.ts`. Captions are kinetic
-typography because there is no Persian TTS on the build machine — no fake
+typography because there is no Persian TTS on the build machine â€” no fake
 voice-over, no borrowed audio. The soundtrack in `public/audio/bed.wav` is
 synthesised from sine waves and filtered noise by `scripts/generate-audio.mjs`.
 
 | #   | Scene                           | Length |
 | --- | ------------------------------- | ------ |
-| 1   | Cold open — wordmark            | 6s     |
-| 2   | The problem — three leaks       | 8s     |
-| 3   | Order flow — 11 events          | 14s    |
-| 4   | Kitchen — same instant          | 10s    |
-| 5   | Inventory — before it runs out  | 12s    |
-| 6   | Analytics — profit, not revenue | 13s    |
-| 7   | Marketing — attribution         | 8s     |
-| 8   | Product — one screen            | 10s    |
+| 1   | Cold open â€” wordmark            | 6s     |
+| 2   | The problem â€” three leaks       | 8s     |
+| 3   | Order flow â€” 11 events          | 14s    |
+| 4   | Kitchen â€” same instant          | 10s    |
+| 5   | Inventory â€” before it runs out  | 12s    |
+| 6   | Analytics â€” profit, not revenue | 13s    |
+| 7   | Marketing â€” attribution         | 8s     |
+| 8   | Product â€” one screen            | 10s    |
 | 9   | Outro                           | 7s     |
 
-Total: **2,640 frames / 88 seconds**.
+Total: **2,100 frames / 70 seconds**.
 
 ---
 
@@ -153,5 +153,6 @@ docs/           architecture notes
 
 ## Docs
 
-- [`docs/architecture.md`](docs/architecture.md) — event model, P&L math, opex
+- [`docs/architecture.md`](docs/architecture.md) â€” event model, P&L math, opex
   proration, campaign attribution, stock thresholds, how to add a screen or a scene.
+

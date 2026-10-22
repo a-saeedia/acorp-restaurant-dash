@@ -1,145 +1,230 @@
-import { Clock3, EyeOff, Network } from 'lucide-react';
-import { interpolate, useCurrentFrame } from 'remotion';
-import { Reveal } from '../components/motion';
-import { Caption, Frame, Kicker, Stage } from '../components/stage';
+﻿import type { ReactNode } from 'react';
+import { AbsoluteFill, Easing, useCurrentFrame } from 'remotion';
+import {
+  Act,
+  Chip,
+  CrystalText,
+  Glitch,
+  GoldText,
+  Panel,
+  Ring,
+  Spark,
+  Streaks,
+  Wipe,
+} from '../components/kit';
 import { SCRIPT } from '../script';
+import { C, FONT, clamp, decay, ramp } from '../theme';
 
-const CARDS = [
-  {
-    index: '۰۱',
-    title: 'سفارش پراکنده',
-    body: 'QR، تلفن، پیک — هر کدام در یک جزیرهٔ جدا.',
-    icon: Network,
-  },
-  {
-    index: '۰۲',
-    title: 'موجودی کور',
-    body: 'کسری وقتی دیده می‌شود که دیگر دیر شده.',
-    icon: EyeOff,
-  },
-  {
-    index: '۰۳',
-    title: 'تحلیل دیروز',
-    body: 'گزارش دیشب، تصمیم امروز را نمی‌سازد.',
-    icon: Clock3,
-  },
-];
+const BEAT = 60;
+
+function Beat({
+  index,
+  children,
+  align = 'center',
+}: {
+  index: number;
+  children: ReactNode;
+  align?: 'center' | 'right';
+}) {
+  const frame = useCurrentFrame();
+  const local = frame - index * BEAT;
+  const enter = ramp(local, 0, 12, Easing.out(Easing.exp));
+  const out = decay(local, BEAT - 12, 12, Easing.in(Easing.cubic));
+  if (local < -1 || local > BEAT + 2) return null;
+
+  return (
+    <AbsoluteFill
+      style={{
+        opacity: clamp(enter * 1.2) * out,
+        transform: `translateX(${(1 - enter) * 90 - (1 - out) * 160}px) scale(${0.96 + enter * 0.04 - (1 - out) * 0.06})`,
+        filter: (1 - out) * 8 > 0.4 ? `blur(${(1 - out) * 8}px)` : undefined,
+        alignItems: align === 'center' ? 'center' : 'flex-end',
+        justifyContent: 'center',
+      }}
+    >
+      {children}
+    </AbsoluteFill>
+  );
+}
+
+function Ticket({ rotate, x, y, delay }: { rotate: number; x: number; y: number; delay: number }) {
+  const frame = useCurrentFrame();
+  const drift = Math.sin((frame + delay) / 22) * 12;
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: x,
+        top: y,
+        width: 250,
+        height: 160,
+        transform: `translate(${drift}px, ${Math.cos((frame + delay) / 26) * 8}px) rotate(${rotate}deg)`,
+      }}
+    >
+      <Panel pad={16} glow={0.25} radius={12} style={{ borderColor: 'rgba(255,111,125,0.22)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, direction: 'rtl' }}>
+          <div
+            style={{
+              height: 8,
+              width: '62%',
+              background: 'rgba(255,111,125,0.55)',
+              borderRadius: 4,
+            }}
+          />
+          <div
+            style={{
+              height: 5,
+              width: '88%',
+              background: 'rgba(255,255,255,0.14)',
+              borderRadius: 4,
+            }}
+          />
+          <div
+            style={{
+              height: 5,
+              width: '72%',
+              background: 'rgba(255,255,255,0.10)',
+              borderRadius: 4,
+            }}
+          />
+          <div
+            style={{
+              height: 5,
+              width: '80%',
+              background: 'rgba(255,255,255,0.10)',
+              borderRadius: 4,
+            }}
+          />
+        </div>
+      </Panel>
+    </div>
+  );
+}
 
 export function Problem() {
   const frame = useCurrentFrame();
-  const script = SCRIPT.Problem;
+  const beat = Math.min(3, Math.floor(frame / BEAT));
 
   return (
-    <Stage bloom="left">
-      <Frame align="top">
-        <div style={{ marginTop: 40 }}>
-          <Reveal start={0}>
-            <Kicker>{script.kicker}</Kicker>
-          </Reveal>
-          <Reveal start={6} y={24}>
-            <h1
-              lang="fa"
+    <Act
+      seed={21}
+      shards={7}
+      streak={beat < 3 ? 1 : 0.3}
+      caption={SCRIPT.problem.caption}
+      captionStart={8}
+    >
+      <AbsoluteFill>
+        <Beat index={0}>
+          <div style={{ position: 'absolute', left: 120, top: 300, width: 620, height: 460 }}>
+            {[0, 1, 2, 3, 4].map((i) => (
+              <Ticket key={i} rotate={-16 + i * 9} x={40 + i * 46} y={60 + i * 38} delay={i * 17} />
+            ))}
+          </div>
+          <div style={{ position: 'absolute', right: 130, top: 390, width: 780, direction: 'rtl' }}>
+            <Glitch at={2}>
+              <CrystalText size={96} weight={800}>
+                {SCRIPT.problem.beats[0]}
+              </CrystalText>
+            </Glitch>
+            <div style={{ marginTop: 26 }}>
+              <Chip tone="danger">۳ سفارش، سه کاغذ</Chip>
+            </div>
+          </div>
+        </Beat>
+
+        <Beat index={1}>
+          <div style={{ position: 'absolute', left: 150, top: 360, width: 560 }}>
+            <div
               style={{
-                fontSize: 82,
-                fontWeight: 750,
-                letterSpacing: '-0.03em',
-                lineHeight: 1.18,
-                margin: 0,
-                maxWidth: 1100,
+                display: 'flex',
+                justifyContent: 'space-between',
+                direction: 'rtl',
+                marginBottom: 14,
               }}
             >
-              رستوران‌ها با داده می‌جنگند،
-              <br />
-              <span style={{ color: 'rgba(242,238,231,0.42)' }}>نه با غذا.</span>
-            </h1>
-          </Reveal>
-        </div>
+              <span style={{ fontFamily: FONT, fontSize: 22, color: C.mist }}>گوشت چرخ‌کرده</span>
+              <GoldText size={26}>۰ گرم</GoldText>
+            </div>
+            <div
+              style={{
+                height: 18,
+                borderRadius: 999,
+                background: 'rgba(255,255,255,0.07)',
+                overflow: 'hidden',
+              }}
+            >
+              <div
+                style={{
+                  height: '100%',
+                  width: `${Math.max(0, 34 - ramp(frame, 66, 34) * 34)}%`,
+                  background: 'linear-gradient(90deg, #ff6f7d, #e8b45c)',
+                  boxShadow: '0 0 26px rgba(255,111,125,0.6)',
+                }}
+              />
+            </div>
+            <div style={{ marginTop: 18, display: 'flex', gap: 10 }}>
+              <Chip tone="danger">کسری</Chip>
+              <Chip tone="crystal">آستانه ۴٬۰۰۰</Chip>
+            </div>
+          </div>
+          <div style={{ position: 'absolute', right: 130, top: 390, width: 780, direction: 'rtl' }}>
+            <Glitch at={62}>
+              <CrystalText size={96} weight={800}>
+                {SCRIPT.problem.beats[1]}
+              </CrystalText>
+            </Glitch>
+            <div style={{ marginTop: 26 }}>
+              <Chip tone="danger">بدون هشدار، بدون خرید</Chip>
+            </div>
+          </div>
+        </Beat>
 
-        <div style={{ display: 'flex', gap: 22, marginTop: 72 }}>
-          {CARDS.map((card, index) => {
-            const Icon = card.icon;
-            return (
-              <Reveal key={card.index} start={44 + index * 16} y={30} style={{ flex: 1 }}>
-                <div
-                  style={{
-                    border: '1px solid rgba(255,255,255,0.08)',
-                    background:
-                      'linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.012))',
-                    borderRadius: 20,
-                    padding: '30px 28px 34px',
-                    minHeight: 260,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 16,
-                    position: 'relative',
-                    overflow: 'hidden',
-                  }}
-                >
-                  <div
-                    style={{
-                      position: 'absolute',
-                      insetInlineStart: 0,
-                      top: 0,
-                      height: 2,
-                      width: `${30 + index * 22}%`,
-                      background: 'linear-gradient(90deg, #e3a854, transparent)',
-                      opacity: 0.7,
-                    }}
-                  />
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <span
-                      style={{
-                        width: 44,
-                        height: 44,
-                        borderRadius: 12,
-                        display: 'grid',
-                        placeItems: 'center',
-                        background: 'rgba(227,168,84,0.10)',
-                        color: '#e3a854',
-                      }}
-                    >
-                      <Icon size={21} strokeWidth={1.7} />
-                    </span>
-                    <span
-                      lang="fa"
-                      style={{
-                        fontSize: 15,
-                        color: 'rgba(242,238,231,0.28)',
-                        fontVariantNumeric: 'tabular-nums',
-                      }}
-                    >
-                      {card.index}
-                    </span>
-                  </div>
-                  <div lang="fa" style={{ fontSize: 30, fontWeight: 650, marginTop: 6 }}>
-                    {card.title}
-                  </div>
-                  <div
-                    lang="fa"
-                    style={{ fontSize: 20, lineHeight: 1.7, color: 'rgba(242,238,231,0.52)' }}
-                  >
-                    {card.body}
-                  </div>
-                </div>
-              </Reveal>
-            );
-          })}
-        </div>
-      </Frame>
+        <Beat index={2}>
+          <div style={{ position: 'absolute', left: 120, top: 330, opacity: 0.95 }}>
+            <Spark
+              points={[0.78, 0.7, 0.74, 0.55, 0.6, 0.4, 0.44, 0.24, 0.3, 0.12]}
+              start={120}
+              duration={52}
+              width={620}
+              height={300}
+              color="#ff6f7d"
+            />
+          </div>
+          <div style={{ position: 'absolute', right: 130, top: 390, width: 780, direction: 'rtl' }}>
+            <Glitch at={122}>
+              <CrystalText size={96} weight={800}>
+                {SCRIPT.problem.beats[2]}
+              </CrystalText>
+            </Glitch>
+            <div style={{ marginTop: 26 }}>
+              <Chip tone="danger">سود فقط در گزارش ماه بعد</Chip>
+            </div>
+          </div>
+        </Beat>
 
-      <Caption
-        text={script.caption}
-        opacity={interpolate(frame, [120, 140], [0, 1], {
-          extrapolateLeft: 'clamp',
-          extrapolateRight: 'clamp',
-        })}
-      />
-    </Stage>
+        <Beat index={3}>
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transform: `scale(${1 + (1 - ramp(frame, 180, 22)) * 0.12})`,
+            }}
+          >
+            <Ring value={1} start={182} duration={26} size={360} stroke={3} color="gold" />
+            <div style={{ position: 'absolute', direction: 'rtl' }}>
+              <GoldText size={112} weight={850}>
+                {SCRIPT.problem.beats[3]}
+              </GoldText>
+            </div>
+          </div>
+        </Beat>
+
+        <Streaks power={beat === 3 ? 2.2 : 1} color="rgba(232,180,92,0.35)" />
+        <Wipe at={228} />
+      </AbsoluteFill>
+    </Act>
   );
 }

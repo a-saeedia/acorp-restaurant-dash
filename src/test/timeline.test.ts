@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+﻿import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
@@ -30,9 +30,9 @@ function audioCuts(): number[] {
 }
 
 describe('film timeline', () => {
-  it('is 88 seconds at 30fps', () => {
+  it('is 70 seconds at 30fps', () => {
     expect(VIDEO_FPS).toBe(30);
-    expect(durationSeconds).toBe(88);
+    expect(durationSeconds).toBe(70);
   });
 
   it('keeps the soundtrack the same length as the film', () => {
@@ -54,7 +54,8 @@ describe('film timeline', () => {
     const frames = `${TOTAL_FRAMES.toLocaleString('en-US')} frames`;
     expect(readme).toContain(frames);
     expect(readme).toContain(seconds);
-    expect(readme).not.toContain('90-second');
-    expect(readme).not.toContain('2,700 frames');
+    expect(readme).not.toContain('88-second');
+    expect(readme).not.toContain('2,640 frames');
   });
 });
+

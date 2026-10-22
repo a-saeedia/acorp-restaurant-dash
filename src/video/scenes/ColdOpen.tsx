@@ -1,84 +1,74 @@
-import { AbsoluteFill, interpolate, useCurrentFrame } from 'remotion';
-import { Hairline, Reveal } from '../components/motion';
-import { Caption, Frame, Kicker, Stage } from '../components/stage';
+import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from 'remotion';
+import { CrystalText, Kinetic, Particles, Slam, Wipe, Act } from '../components/kit';
 import { SCRIPT } from '../script';
-import { sceneFrames } from '../timeline';
+import { C, FONT, GRAD, ramp } from '../theme';
 
 export function ColdOpen() {
   const frame = useCurrentFrame();
-  const total = sceneFrames('ColdOpen');
-  const script = SCRIPT.ColdOpen;
-
-  const push = interpolate(frame, [0, total], [1, 1.035]);
-  const fadeOut = interpolate(frame, [total - 16, total], [1, 0], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  const push = interpolate(frame, [0, 180], [1.03, 1.09]);
 
   return (
-    <Stage bloom="center">
-      <AbsoluteFill style={{ opacity: fadeOut }}>
-        <Frame>
+    <Act seed={7} shards={11} impactAt={12} impactAmp={24} flashAt={12} flashFrames={4}>
+      <AbsoluteFill style={{ transform: `scale(${push})` }}>
+        <div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: '47%',
+            transform: 'translate(-50%, -50%)',
+            width: 1200,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Slam start={2} from={4.4} duration={16} blur={26}>
+            <CrystalText size={252} weight={900} style={{ letterSpacing: '-0.055em' }}>
+              {SCRIPT.brand}
+            </CrystalText>
+          </Slam>
+
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              textAlign: 'center',
-              transform: `scale(${push})`,
+              width: 440,
+              height: 3,
+              marginTop: 6,
+              background: GRAD.gold,
+              boxShadow: '0 0 30px rgba(232,180,92,0.9)',
+              transformOrigin: '50% 50%',
+              transform: `scaleX(${ramp(frame, 14, 20, Easing.out(Easing.exp))})`,
+              opacity: ramp(frame, 14, 6),
+            }}
+          />
+
+          <div style={{ direction: 'rtl', marginTop: 42 }}>
+            <Kinetic
+              text={SCRIPT.cold.line}
+              start={24}
+              per={3}
+              size={46}
+              weight={600}
+              color={C.crystal}
+              align="center"
+            />
+          </div>
+
+          <div
+            style={{
+              marginTop: 22,
+              fontFamily: FONT,
+              fontSize: 19,
+              letterSpacing: '0.3em',
+              color: C.mist,
+              opacity: ramp(frame, 50, 20),
             }}
           >
-            <Reveal start={10} y={0}>
-              <Kicker>{script.kicker}</Kicker>
-            </Reveal>
-
-            <Reveal start={22} y={30} duration={26}>
-              <div
-                style={{
-                  fontSize: 196,
-                  fontWeight: 800,
-                  letterSpacing: '-0.055em',
-                  lineHeight: 1,
-                  color: '#f6f1e7',
-                  textShadow: '0 30px 90px rgba(227,168,84,0.18)',
-                }}
-              >
-                ACorp
-              </div>
-            </Reveal>
-
-            <div style={{ marginTop: 26, marginBottom: 26 }}>
-              <Hairline start={46} duration={30} width={420} />
-            </div>
-
-            <Reveal start={58} y={16}>
-              <div
-                lang="fa"
-                style={{ fontSize: 40, fontWeight: 600, color: 'rgba(242,238,231,0.92)' }}
-              >
-                سامانهٔ هوشمند مدیریت رستوران
-              </div>
-            </Reveal>
-
-            <Reveal start={74} y={12}>
-              <div
-                lang="fa"
-                style={{ fontSize: 23, color: 'rgba(242,238,231,0.45)', marginTop: 14 }}
-              >
-                شعبه ونک · تهران · نسخهٔ ۱٫۰
-              </div>
-            </Reveal>
+            {SCRIPT.cold.sub}
           </div>
-        </Frame>
-
-        <Caption
-          text={script.caption}
-          opacity={interpolate(frame, [96, 112], [0, 1], {
-            extrapolateLeft: 'clamp',
-            extrapolateRight: 'clamp',
-          })}
-        />
+        </div>
       </AbsoluteFill>
-    </Stage>
+      <Particles at={12} count={46} x={50} y={45} />
+      <Wipe at={162} />
+    </Act>
   );
 }

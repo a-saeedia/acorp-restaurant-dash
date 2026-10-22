@@ -10,6 +10,12 @@ so the dashboard, the tests and the film can never disagree.
 **Live dashboard:** <https://acorp-restaurant-dash.darkestjokepossible.workers.dev/>
 **Commercial (MP4, 88s):** [download](https://github.com/a-saeedia/acorp-restaurant-dash/releases/download/v1.0.0/acorp-commercial.mp4)
 
+[![CI](https://github.com/a-saeedia/acorp-restaurant-dash/actions/workflows/ci.yml/badge.svg)](https://github.com/a-saeedia/acorp-restaurant-dash/actions/workflows/ci.yml)
+
+![ACorp dashboard](docs/media/dashboard.png)
+
+![Commercial still](docs/media/poster.png)
+
 ---
 
 ## What is in here
@@ -78,14 +84,19 @@ Money is stored as integer Toman. No floats touch a currency value.
 
 ## Deployment
 
-The dashboard is a static SPA, deployed to Cloudflare Pages:
+The dashboard is a static SPA served by a **Cloudflare Worker with static
+assets** (`wrangler.jsonc`):
 
 ```bash
 pnpm build
-pnpm exec wrangler pages deploy dist --project-name acorp-restaurant-intelligence
+cp out/acorp-commercial.mp4 dist/     # optional: ship the film with the site
+pnpm exec wrangler deploy
 ```
 
-No server, no database, no secrets. The bundle is ~710 kB (209 kB gzip).
+Note: `wrangler pages deploy` will refuse to run here — the repository ships a
+Workers config (`assets.directory = ./dist`), which Cloudflare now recommends
+over Pages. No server, no database, no secrets. The app bundle is ~710 kB
+(209 kB gzip).
 
 ---
 

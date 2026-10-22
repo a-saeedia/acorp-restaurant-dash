@@ -17,7 +17,7 @@ export interface SceneSpec {
 }
 
 export const SCENES: SceneSpec[] = [
-  { id: 'ColdOpen', frames: 180, labelFa: 'ورود برند' },
+  { id: 'ColdOpen', frames: 210, labelFa: 'ورود برند' },
   { id: 'Problem', frames: 240, labelFa: 'مسئله' },
   { id: 'OrderFlow', frames: 420, labelFa: 'چرخهٔ سفارش' },
   { id: 'Kitchen', frames: 300, labelFa: 'آشپزخانه' },
@@ -25,7 +25,7 @@ export const SCENES: SceneSpec[] = [
   { id: 'Analytics', frames: 390, labelFa: 'تحلیل' },
   { id: 'Marketing', frames: 240, labelFa: 'بازاریابی' },
   { id: 'Product', frames: 300, labelFa: 'محصول' },
-  { id: 'Outro', frames: 210, labelFa: 'پایان' },
+  { id: 'Outro', frames: 240, labelFa: 'پایان' },
 ];
 
 export const TOTAL_FRAMES = SCENES.reduce((sum, scene) => sum + scene.frames, 0);

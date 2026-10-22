@@ -1,0 +1,7 @@
+dist
+out
+node_modules
+pnpm-lock.yaml
+public/fonts
+*.mp4
+*.wav

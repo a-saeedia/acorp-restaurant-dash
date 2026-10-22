@@ -39,7 +39,7 @@ marketing, notifications, and a global simulation dock that replays the full
 ```bash
 pnpm install
 pnpm dev            # dashboard on http://localhost:5173
-pnpm test           # 30 engine/selector tests
+pnpm test           # 34 engine/selector/timeline tests
 pnpm build          # typecheck + production bundle into dist/
 pnpm demo           # serve dist/ on http://127.0.0.1:4318 (fixed port)
 ```
